@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { PlanScreen } from './ui/PlanScreen'
 import { SettingsScreen } from './ui/SettingsScreen'
 import { useAppState } from './ui/useAppState'
 
@@ -15,6 +16,9 @@ export default function App() {
   return (
     <main>
       {tab === 'settings' && <SettingsScreen settings={app.settings} onChange={app.setSettings} />}
+      {tab === 'plan' && (
+        <PlanScreen settings={app.settings} recipes={app.recipes} plan={app.plan} onPlan={app.setPlan} />
+      )}
       <nav className="tabs">
         {tabs.map((t) => (
           <button key={t.key} aria-current={tab === t.key ? 'page' : undefined} onClick={() => setTab(t.key)}>
