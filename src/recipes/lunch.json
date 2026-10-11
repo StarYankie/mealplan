@@ -1,0 +1,1527 @@
+[
+ {
+  "id": "l01",
+  "name": "계란볶음밥",
+  "meals": [
+   "lunch"
+  ],
+  "difficulty": 1,
+  "minutes": 10,
+  "ingredients": [
+   {
+    "name": "밥",
+    "amount": 1,
+    "unit": "공기",
+    "category": "기타"
+   },
+   {
+    "name": "계란",
+    "amount": 2,
+    "unit": "개",
+    "category": "육류·계란"
+   },
+   {
+    "name": "대파",
+    "amount": 0.25,
+    "unit": "대",
+    "category": "채소·과일"
+   }
+  ],
+  "steps": [
+   "대파를 잘게 썰어 기름 두른 팬에 볶아 향을 낸다.",
+   "계란을 넣고 휘저어 스크램블을 만든다.",
+   "밥을 넣고 간장과 소금으로 간을 해 센 불에서 볶는다."
+  ]
+ },
+ {
+  "id": "l02",
+  "name": "참치마요덮밥",
+  "meals": [
+   "lunch"
+  ],
+  "difficulty": 1,
+  "minutes": 10,
+  "ingredients": [
+   {
+    "name": "밥",
+    "amount": 1,
+    "unit": "공기",
+    "category": "기타"
+   },
+   {
+    "name": "참치캔",
+    "amount": 0.5,
+    "unit": "캔",
+    "category": "기타"
+   },
+   {
+    "name": "마요네즈",
+    "amount": 1,
+    "unit": "큰술",
+    "category": "기타"
+   },
+   {
+    "name": "김",
+    "amount": 1,
+    "unit": "장",
+    "category": "기타"
+   }
+  ],
+  "steps": [
+   "참치의 기름을 빼고 마요네즈, 간장 약간과 섞는다.",
+   "밥 위에 참치를 올린다.",
+   "김을 부숴 뿌리고 참기름을 두른다."
+  ]
+ },
+ {
+  "id": "l03",
+  "name": "간장계란비빔밥",
+  "meals": [
+   "lunch"
+  ],
+  "difficulty": 1,
+  "minutes": 7,
+  "ingredients": [
+   {
+    "name": "밥",
+    "amount": 1,
+    "unit": "공기",
+    "category": "기타"
+   },
+   {
+    "name": "계란",
+    "amount": 1,
+    "unit": "개",
+    "category": "육류·계란"
+   },
+   {
+    "name": "김",
+    "amount": 1,
+    "unit": "장",
+    "category": "기타"
+   }
+  ],
+  "steps": [
+   "팬에 기름을 넉넉히 두르고 계란 프라이를 만든다.",
+   "따뜻한 밥에 프라이를 올린다.",
+   "간장, 참기름을 두르고 김을 부숴 얹어 비빈다."
+  ]
+ },
+ {
+  "id": "l04",
+  "name": "김치볶음밥",
+  "meals": [
+   "lunch"
+  ],
+  "difficulty": 1,
+  "minutes": 15,
+  "ingredients": [
+   {
+    "name": "밥",
+    "amount": 1,
+    "unit": "공기",
+    "category": "기타"
+   },
+   {
+    "name": "김치",
+    "amount": 80,
+    "unit": "g",
+    "category": "기타"
+   },
+   {
+    "name": "계란",
+    "amount": 1,
+    "unit": "개",
+    "category": "육류·계란"
+   },
+   {
+    "name": "대파",
+    "amount": 0.25,
+    "unit": "대",
+    "category": "채소·과일"
+   }
+  ],
+  "steps": [
+   "김치를 잘게 썰고 대파와 함께 기름에 볶는다.",
+   "밥을 넣고 김치 국물 약간과 함께 볶는다.",
+   "계란 프라이를 올리고 참기름과 깨를 뿌린다."
+  ]
+ },
+ {
+  "id": "l05",
+  "name": "햄치즈토스트",
+  "meals": [
+   "lunch",
+   "breakfast"
+  ],
+  "difficulty": 1,
+  "minutes": 10,
+  "ingredients": [
+   {
+    "name": "식빵",
+    "amount": 2,
+    "unit": "장",
+    "category": "기타"
+   },
+   {
+    "name": "햄",
+    "amount": 2,
+    "unit": "장",
+    "category": "기타"
+   },
+   {
+    "name": "슬라이스치즈",
+    "amount": 1,
+    "unit": "장",
+    "category": "기타"
+   },
+   {
+    "name": "계란",
+    "amount": 1,
+    "unit": "개",
+    "category": "육류·계란"
+   }
+  ],
+  "steps": [
+   "식빵을 팬이나 토스터에 노릇하게 굽는다.",
+   "계란 프라이와 햄을 구워 식빵 위에 올린다.",
+   "치즈를 얹고 다른 식빵으로 덮어 반으로 자른다."
+  ]
+ },
+ {
+  "id": "l06",
+  "name": "참치마요주먹밥",
+  "meals": [
+   "lunch"
+  ],
+  "difficulty": 1,
+  "minutes": 10,
+  "ingredients": [
+   {
+    "name": "밥",
+    "amount": 1,
+    "unit": "공기",
+    "category": "기타"
+   },
+   {
+    "name": "참치캔",
+    "amount": 0.5,
+    "unit": "캔",
+    "category": "기타"
+   },
+   {
+    "name": "마요네즈",
+    "amount": 1,
+    "unit": "큰술",
+    "category": "기타"
+   },
+   {
+    "name": "김",
+    "amount": 1,
+    "unit": "장",
+    "category": "기타"
+   }
+  ],
+  "steps": [
+   "기름을 뺀 참치에 마요네즈를 섞는다.",
+   "밥에 참치와 참기름, 깨를 넣고 섞는다.",
+   "한입 크기로 뭉쳐 김가루를 묻힌다."
+  ]
+ },
+ {
+  "id": "l07",
+  "name": "비빔국수",
+  "meals": [
+   "lunch"
+  ],
+  "difficulty": 2,
+  "minutes": 15,
+  "ingredients": [
+   {
+    "name": "소면",
+    "amount": 100,
+    "unit": "g",
+    "category": "기타"
+   },
+   {
+    "name": "오이",
+    "amount": 0.3,
+    "unit": "개",
+    "category": "채소·과일"
+   },
+   {
+    "name": "고추장",
+    "amount": 1.5,
+    "unit": "큰술",
+    "category": "기타"
+   },
+   {
+    "name": "계란",
+    "amount": 1,
+    "unit": "개",
+    "category": "육류·계란"
+   }
+  ],
+  "steps": [
+   "계란을 삶고 오이는 채 썬다.",
+   "소면을 삶아 찬물에 헹궈 물기를 뺀다.",
+   "고추장, 설탕, 식초 약간, 참기름으로 양념장을 만들어 비빈 뒤 고명을 올린다."
+  ]
+ },
+ {
+  "id": "l08",
+  "name": "잔치국수",
+  "meals": [
+   "lunch"
+  ],
+  "difficulty": 2,
+  "minutes": 20,
+  "ingredients": [
+   {
+    "name": "소면",
+    "amount": 100,
+    "unit": "g",
+    "category": "기타"
+   },
+   {
+    "name": "애호박",
+    "amount": 0.25,
+    "unit": "개",
+    "category": "채소·과일"
+   },
+   {
+    "name": "계란",
+    "amount": 1,
+    "unit": "개",
+    "category": "육류·계란"
+   },
+   {
+    "name": "어묵",
+    "amount": 1,
+    "unit": "장",
+    "category": "기타"
+   },
+   {
+    "name": "대파",
+    "amount": 0.25,
+    "unit": "대",
+    "category": "채소·과일"
+   }
+  ],
+  "steps": [
+   "어묵과 대파를 물에 넣고 끓여 국물을 낸 뒤 간장과 소금으로 간한다.",
+   "소면을 삶아 찬물에 헹구고 애호박은 채 썰어 볶고 계란은 지단으로 부친다.",
+   "그릇에 면을 담고 뜨거운 국물을 부은 뒤 고명을 올린다."
+  ]
+ },
+ {
+  "id": "l09",
+  "name": "계란라면",
+  "meals": [
+   "lunch"
+  ],
+  "difficulty": 1,
+  "minutes": 10,
+  "ingredients": [
+   {
+    "name": "라면",
+    "amount": 1,
+    "unit": "개",
+    "category": "기타"
+   },
+   {
+    "name": "계란",
+    "amount": 1,
+    "unit": "개",
+    "category": "육류·계란"
+   },
+   {
+    "name": "대파",
+    "amount": 0.25,
+    "unit": "대",
+    "category": "채소·과일"
+   }
+  ],
+  "steps": [
+   "물이 끓으면 면과 스프를 넣는다.",
+   "대파를 썰어 넣는다.",
+   "면이 익기 직전에 계란을 풀어 넣고 불을 끈다."
+  ]
+ },
+ {
+  "id": "l10",
+  "name": "떡볶이",
+  "meals": [
+   "lunch"
+  ],
+  "difficulty": 2,
+  "minutes": 20,
+  "ingredients": [
+   {
+    "name": "떡볶이떡",
+    "amount": 150,
+    "unit": "g",
+    "category": "기타"
+   },
+   {
+    "name": "어묵",
+    "amount": 1,
+    "unit": "장",
+    "category": "기타"
+   },
+   {
+    "name": "고추장",
+    "amount": 1.5,
+    "unit": "큰술",
+    "category": "기타"
+   },
+   {
+    "name": "대파",
+    "amount": 0.25,
+    "unit": "대",
+    "category": "채소·과일"
+   }
+  ],
+  "steps": [
+   "물에 고추장, 설탕, 간장, 고춧가루를 풀어 끓인다.",
+   "떡과 어묵을 넣고 국물이 졸아들 때까지 저으며 끓인다.",
+   "대파를 넣고 한소끔 더 끓인다."
+  ]
+ },
+ {
+  "id": "l11",
+  "name": "어묵야채볶음우동",
+  "meals": [
+   "lunch"
+  ],
+  "difficulty": 1,
+  "minutes": 15,
+  "ingredients": [
+   {
+    "name": "우동면",
+    "amount": 200,
+    "unit": "g",
+    "category": "기타"
+   },
+   {
+    "name": "양배추",
+    "amount": 50,
+    "unit": "g",
+    "category": "채소·과일"
+   },
+   {
+    "name": "양파",
+    "amount": 0.25,
+    "unit": "개",
+    "category": "채소·과일"
+   },
+   {
+    "name": "어묵",
+    "amount": 1,
+    "unit": "장",
+    "category": "기타"
+   }
+  ],
+  "steps": [
+   "채소와 어묵을 먹기 좋게 썬다.",
+   "기름에 어묵과 채소를 볶는다.",
+   "우동면을 넣고 간장과 설탕으로 간해 볶는다."
+  ]
+ },
+ {
+  "id": "l12",
+  "name": "카레라이스",
+  "meals": [
+   "lunch"
+  ],
+  "difficulty": 2,
+  "minutes": 30,
+  "ingredients": [
+   {
+    "name": "밥",
+    "amount": 1,
+    "unit": "공기",
+    "category": "기타"
+   },
+   {
+    "name": "카레가루",
+    "amount": 2,
+    "unit": "큰술",
+    "category": "기타"
+   },
+   {
+    "name": "감자",
+    "amount": 0.5,
+    "unit": "개",
+    "category": "채소·과일"
+   },
+   {
+    "name": "당근",
+    "amount": 0.25,
+    "unit": "개",
+    "category": "채소·과일"
+   },
+   {
+    "name": "양파",
+    "amount": 0.5,
+    "unit": "개",
+    "category": "채소·과일"
+   },
+   {
+    "name": "돼지고기",
+    "amount": 80,
+    "unit": "g",
+    "category": "육류·계란"
+   }
+  ],
+  "steps": [
+   "채소와 돼지고기를 깍둑썰기해 기름에 볶는다.",
+   "물을 붓고 채소가 익을 때까지 끓인다.",
+   "불을 줄이고 카레가루를 풀어 걸쭉해질 때까지 끓여 밥에 얹는다."
+  ]
+ },
+ {
+  "id": "l13",
+  "name": "짜장밥",
+  "meals": [
+   "lunch"
+  ],
+  "difficulty": 2,
+  "minutes": 25,
+  "ingredients": [
+   {
+    "name": "밥",
+    "amount": 1,
+    "unit": "공기",
+    "category": "기타"
+   },
+   {
+    "name": "짜장가루",
+    "amount": 3,
+    "unit": "큰술",
+    "category": "기타"
+   },
+   {
+    "name": "돼지고기",
+    "amount": 80,
+    "unit": "g",
+    "category": "육류·계란"
+   },
+   {
+    "name": "양파",
+    "amount": 0.5,
+    "unit": "개",
+    "category": "채소·과일"
+   },
+   {
+    "name": "애호박",
+    "amount": 0.25,
+    "unit": "개",
+    "category": "채소·과일"
+   }
+  ],
+  "steps": [
+   "돼지고기와 양파, 애호박을 작게 썰어 기름에 볶는다.",
+   "물을 붓고 끓어오르면 짜장가루를 풀어 넣는다.",
+   "걸쭉해질 때까지 저으며 끓여 밥 위에 붓는다."
+  ]
+ },
+ {
+  "id": "l14",
+  "name": "오므라이스",
+  "meals": [
+   "lunch"
+  ],
+  "difficulty": 2,
+  "minutes": 20,
+  "ingredients": [
+   {
+    "name": "밥",
+    "amount": 1,
+    "unit": "공기",
+    "category": "기타"
+   },
+   {
+    "name": "계란",
+    "amount": 2,
+    "unit": "개",
+    "category": "육류·계란"
+   },
+   {
+    "name": "양파",
+    "amount": 0.25,
+    "unit": "개",
+    "category": "채소·과일"
+   },
+   {
+    "name": "햄",
+    "amount": 1,
+    "unit": "장",
+    "category": "기타"
+   },
+   {
+    "name": "케첩",
+    "amount": 2,
+    "unit": "큰술",
+    "category": "기타"
+   }
+  ],
+  "steps": [
+   "양파와 햄을 잘게 썰어 볶다가 밥과 케첩 1큰술을 넣고 볶는다.",
+   "계란을 풀어 얇게 부쳐 한쪽에 밥을 올리고 감싼다.",
+   "접시에 옮기고 케첩을 뿌린다."
+  ]
+ },
+ {
+  "id": "l15",
+  "name": "닭가슴살샐러드",
+  "meals": [
+   "lunch"
+  ],
+  "difficulty": 1,
+  "minutes": 15,
+  "ingredients": [
+   {
+    "name": "닭가슴살",
+    "amount": 100,
+    "unit": "g",
+    "category": "육류·계란"
+   },
+   {
+    "name": "상추",
+    "amount": 50,
+    "unit": "g",
+    "category": "채소·과일"
+   },
+   {
+    "name": "방울토마토",
+    "amount": 5,
+    "unit": "개",
+    "category": "채소·과일"
+   },
+   {
+    "name": "오이",
+    "amount": 0.3,
+    "unit": "개",
+    "category": "채소·과일"
+   },
+   {
+    "name": "샐러드드레싱",
+    "amount": 2,
+    "unit": "큰술",
+    "category": "기타"
+   }
+  ],
+  "steps": [
+   "닭가슴살을 소금, 후추로 밑간해 팬에 굽거나 삶아 찢는다.",
+   "상추와 오이, 방울토마토를 먹기 좋게 썬다.",
+   "재료를 접시에 담고 드레싱을 뿌린다."
+  ]
+ },
+ {
+  "id": "l16",
+  "name": "계란샌드위치",
+  "meals": [
+   "lunch",
+   "breakfast"
+  ],
+  "difficulty": 1,
+  "minutes": 15,
+  "ingredients": [
+   {
+    "name": "식빵",
+    "amount": 2,
+    "unit": "장",
+    "category": "기타"
+   },
+   {
+    "name": "계란",
+    "amount": 2,
+    "unit": "개",
+    "category": "육류·계란"
+   },
+   {
+    "name": "마요네즈",
+    "amount": 1,
+    "unit": "큰술",
+    "category": "기타"
+   },
+   {
+    "name": "오이",
+    "amount": 0.2,
+    "unit": "개",
+    "category": "채소·과일"
+   }
+  ],
+  "steps": [
+   "계란을 10분 삶아 껍질을 벗기고 으깬다.",
+   "마요네즈, 소금, 후추를 넣어 섞는다.",
+   "식빵에 오이와 계란 소를 올려 덮고 반으로 자른다."
+  ]
+ },
+ {
+  "id": "l17",
+  "name": "참치샌드위치",
+  "meals": [
+   "lunch"
+  ],
+  "difficulty": 1,
+  "minutes": 10,
+  "ingredients": [
+   {
+    "name": "식빵",
+    "amount": 2,
+    "unit": "장",
+    "category": "기타"
+   },
+   {
+    "name": "참치캔",
+    "amount": 0.5,
+    "unit": "캔",
+    "category": "기타"
+   },
+   {
+    "name": "마요네즈",
+    "amount": 1,
+    "unit": "큰술",
+    "category": "기타"
+   },
+   {
+    "name": "양파",
+    "amount": 0.1,
+    "unit": "개",
+    "category": "채소·과일"
+   },
+   {
+    "name": "상추",
+    "amount": 20,
+    "unit": "g",
+    "category": "채소·과일"
+   }
+  ],
+  "steps": [
+   "참치 기름을 빼고 다진 양파, 마요네즈와 섞는다.",
+   "식빵에 상추와 참치 소를 올린다.",
+   "다른 식빵으로 덮어 반으로 자른다."
+  ]
+ },
+ {
+  "id": "l18",
+  "name": "치즈퀘사디아",
+  "meals": [
+   "lunch"
+  ],
+  "difficulty": 1,
+  "minutes": 12,
+  "ingredients": [
+   {
+    "name": "토르티야",
+    "amount": 1,
+    "unit": "장",
+    "category": "기타"
+   },
+   {
+    "name": "모짜렐라치즈",
+    "amount": 50,
+    "unit": "g",
+    "category": "기타"
+   },
+   {
+    "name": "햄",
+    "amount": 2,
+    "unit": "장",
+    "category": "기타"
+   },
+   {
+    "name": "양파",
+    "amount": 0.25,
+    "unit": "개",
+    "category": "채소·과일"
+   }
+  ],
+  "steps": [
+   "햄과 양파를 잘게 썬다.",
+   "토르티야 반쪽에 치즈, 햄, 양파를 올리고 반으로 접는다.",
+   "팬에 양면이 노릇하고 치즈가 녹을 때까지 굽는다."
+  ]
+ },
+ {
+  "id": "l19",
+  "name": "어묵우동",
+  "meals": [
+   "lunch"
+  ],
+  "difficulty": 1,
+  "minutes": 15,
+  "ingredients": [
+   {
+    "name": "우동면",
+    "amount": 200,
+    "unit": "g",
+    "category": "기타"
+   },
+   {
+    "name": "어묵",
+    "amount": 2,
+    "unit": "장",
+    "category": "기타"
+   },
+   {
+    "name": "대파",
+    "amount": 0.25,
+    "unit": "대",
+    "category": "채소·과일"
+   }
+  ],
+  "steps": [
+   "물에 간장과 소금을 넣어 국물을 만들고 어묵을 넣어 끓인다.",
+   "우동면을 넣고 2분 더 끓인다.",
+   "대파를 송송 썰어 올린다."
+  ]
+ },
+ {
+  "id": "l20",
+  "name": "콩나물비빔밥",
+  "meals": [
+   "lunch"
+  ],
+  "difficulty": 2,
+  "minutes": 20,
+  "ingredients": [
+   {
+    "name": "밥",
+    "amount": 1,
+    "unit": "공기",
+    "category": "기타"
+   },
+   {
+    "name": "콩나물",
+    "amount": 100,
+    "unit": "g",
+    "category": "채소·과일"
+   },
+   {
+    "name": "계란",
+    "amount": 1,
+    "unit": "개",
+    "category": "육류·계란"
+   },
+   {
+    "name": "고추장",
+    "amount": 1,
+    "unit": "큰술",
+    "category": "기타"
+   }
+  ],
+  "steps": [
+   "콩나물을 뚜껑을 덮고 5분 삶아 건져 소금, 참기름으로 무친다.",
+   "계란 프라이를 만든다.",
+   "밥에 콩나물과 프라이, 고추장을 올려 비빈다."
+  ]
+ },
+ {
+  "id": "l21",
+  "name": "소고기덮밥",
+  "meals": [
+   "lunch"
+  ],
+  "difficulty": 2,
+  "minutes": 20,
+  "ingredients": [
+   {
+    "name": "밥",
+    "amount": 1,
+    "unit": "공기",
+    "category": "기타"
+   },
+   {
+    "name": "소고기",
+    "amount": 80,
+    "unit": "g",
+    "category": "육류·계란"
+   },
+   {
+    "name": "양파",
+    "amount": 0.5,
+    "unit": "개",
+    "category": "채소·과일"
+   },
+   {
+    "name": "계란",
+    "amount": 1,
+    "unit": "개",
+    "category": "육류·계란"
+   }
+  ],
+  "steps": [
+   "양파를 채 썰고 소고기는 간장, 설탕으로 밑간한다.",
+   "팬에 양파와 소고기를 볶는다.",
+   "밥에 얹고 계란 프라이를 올린다."
+  ]
+ },
+ {
+  "id": "l22",
+  "name": "치킨마요덮밥",
+  "meals": [
+   "lunch"
+  ],
+  "difficulty": 2,
+  "minutes": 20,
+  "ingredients": [
+   {
+    "name": "밥",
+    "amount": 1,
+    "unit": "공기",
+    "category": "기타"
+   },
+   {
+    "name": "닭다리살",
+    "amount": 100,
+    "unit": "g",
+    "category": "육류·계란"
+   },
+   {
+    "name": "마요네즈",
+    "amount": 1,
+    "unit": "큰술",
+    "category": "기타"
+   },
+   {
+    "name": "계란",
+    "amount": 1,
+    "unit": "개",
+    "category": "육류·계란"
+   }
+  ],
+  "steps": [
+   "닭다리살을 한입 크기로 썰어 소금, 후추로 밑간한다.",
+   "기름 두른 팬에 노릇하게 굽고 간장 약간을 넣어 졸인다.",
+   "밥 위에 닭고기와 계란 프라이를 올리고 마요네즈를 뿌린다."
+  ]
+ },
+ {
+  "id": "l23",
+  "name": "스팸마요덮밥",
+  "meals": [
+   "lunch"
+  ],
+  "difficulty": 1,
+  "minutes": 12,
+  "ingredients": [
+   {
+    "name": "밥",
+    "amount": 1,
+    "unit": "공기",
+    "category": "기타"
+   },
+   {
+    "name": "햄",
+    "amount": 2,
+    "unit": "장",
+    "category": "기타"
+   },
+   {
+    "name": "계란",
+    "amount": 1,
+    "unit": "개",
+    "category": "육류·계란"
+   },
+   {
+    "name": "마요네즈",
+    "amount": 1,
+    "unit": "큰술",
+    "category": "기타"
+   },
+   {
+    "name": "김",
+    "amount": 1,
+    "unit": "장",
+    "category": "기타"
+   }
+  ],
+  "steps": [
+   "햄을 노릇하게 굽고 계란 프라이를 만든다.",
+   "밥 위에 햄과 계란을 올린다.",
+   "마요네즈를 뿌리고 김을 부숴 얹는다."
+  ]
+ },
+ {
+  "id": "l24",
+  "name": "냉메밀",
+  "meals": [
+   "lunch"
+  ],
+  "difficulty": 1,
+  "minutes": 15,
+  "ingredients": [
+   {
+    "name": "메밀면",
+    "amount": 100,
+    "unit": "g",
+    "category": "기타"
+   },
+   {
+    "name": "쯔유",
+    "amount": 3,
+    "unit": "큰술",
+    "category": "기타"
+   },
+   {
+    "name": "오이",
+    "amount": 0.3,
+    "unit": "개",
+    "category": "채소·과일"
+   },
+   {
+    "name": "대파",
+    "amount": 0.1,
+    "unit": "대",
+    "category": "채소·과일"
+   }
+  ],
+  "steps": [
+   "메밀면을 삶아 찬물에 여러 번 헹군다.",
+   "쯔유에 찬물을 섞어 국물을 만든다.",
+   "면을 담고 국물을 부은 뒤 오이채와 대파를 올린다."
+  ]
+ },
+ {
+  "id": "l25",
+  "name": "김치말이국수",
+  "meals": [
+   "lunch"
+  ],
+  "difficulty": 1,
+  "minutes": 15,
+  "ingredients": [
+   {
+    "name": "소면",
+    "amount": 100,
+    "unit": "g",
+    "category": "기타"
+   },
+   {
+    "name": "김치",
+    "amount": 60,
+    "unit": "g",
+    "category": "기타"
+   },
+   {
+    "name": "오이",
+    "amount": 0.3,
+    "unit": "개",
+    "category": "채소·과일"
+   },
+   {
+    "name": "계란",
+    "amount": 1,
+    "unit": "개",
+    "category": "육류·계란"
+   }
+  ],
+  "steps": [
+   "소면을 삶아 찬물에 헹구고 계란을 삶는다.",
+   "김치를 잘게 썰어 국물, 식초 약간, 설탕과 섞고 찬물을 붓는다.",
+   "면에 국물을 붓고 오이채와 삶은 계란을 올린다."
+  ]
+ },
+ {
+  "id": "l26",
+  "name": "토마토계란볶음밥",
+  "meals": [
+   "lunch"
+  ],
+  "difficulty": 2,
+  "minutes": 15,
+  "ingredients": [
+   {
+    "name": "밥",
+    "amount": 1,
+    "unit": "공기",
+    "category": "기타"
+   },
+   {
+    "name": "토마토",
+    "amount": 1,
+    "unit": "개",
+    "category": "채소·과일"
+   },
+   {
+    "name": "계란",
+    "amount": 2,
+    "unit": "개",
+    "category": "육류·계란"
+   },
+   {
+    "name": "대파",
+    "amount": 0.25,
+    "unit": "대",
+    "category": "채소·과일"
+   }
+  ],
+  "steps": [
+   "계란을 스크램블해 덜어낸다.",
+   "대파와 토마토를 볶아 즙이 나오면 소금, 설탕을 넣는다.",
+   "계란과 밥을 넣고 함께 볶는다."
+  ]
+ },
+ {
+  "id": "l27",
+  "name": "베이컨볶음밥",
+  "meals": [
+   "lunch"
+  ],
+  "difficulty": 1,
+  "minutes": 12,
+  "ingredients": [
+   {
+    "name": "밥",
+    "amount": 1,
+    "unit": "공기",
+    "category": "기타"
+   },
+   {
+    "name": "베이컨",
+    "amount": 2,
+    "unit": "장",
+    "category": "육류·계란"
+   },
+   {
+    "name": "양파",
+    "amount": 0.25,
+    "unit": "개",
+    "category": "채소·과일"
+   },
+   {
+    "name": "계란",
+    "amount": 1,
+    "unit": "개",
+    "category": "육류·계란"
+   }
+  ],
+  "steps": [
+   "베이컨과 양파를 잘게 썰어 볶는다.",
+   "계란을 넣어 스크램블한다.",
+   "밥을 넣고 간장, 후추로 간해 볶는다."
+  ]
+ },
+ {
+  "id": "l28",
+  "name": "두부부침과 밥",
+  "meals": [
+   "lunch",
+   "dinner"
+  ],
+  "difficulty": 1,
+  "minutes": 15,
+  "ingredients": [
+   {
+    "name": "두부",
+    "amount": 0.5,
+    "unit": "모",
+    "category": "기타"
+   },
+   {
+    "name": "계란",
+    "amount": 1,
+    "unit": "개",
+    "category": "육류·계란"
+   },
+   {
+    "name": "밥",
+    "amount": 1,
+    "unit": "공기",
+    "category": "기타"
+   }
+  ],
+  "steps": [
+   "두부를 도톰하게 썰어 소금을 뿌리고 물기를 닦는다.",
+   "계란물을 입혀 기름에 노릇하게 부친다.",
+   "간장에 다진 마늘, 참기름, 깨를 섞은 양념장을 곁들여 밥과 먹는다."
+  ]
+ },
+ {
+  "id": "l29",
+  "name": "참치김치덮밥",
+  "meals": [
+   "lunch"
+  ],
+  "difficulty": 1,
+  "minutes": 12,
+  "ingredients": [
+   {
+    "name": "밥",
+    "amount": 1,
+    "unit": "공기",
+    "category": "기타"
+   },
+   {
+    "name": "참치캔",
+    "amount": 0.5,
+    "unit": "캔",
+    "category": "기타"
+   },
+   {
+    "name": "김치",
+    "amount": 60,
+    "unit": "g",
+    "category": "기타"
+   },
+   {
+    "name": "계란",
+    "amount": 1,
+    "unit": "개",
+    "category": "육류·계란"
+   }
+  ],
+  "steps": [
+   "김치를 잘게 썰어 볶다가 기름 뺀 참치를 넣고 함께 볶는다.",
+   "계란 프라이를 만든다.",
+   "밥 위에 볶은 김치참치와 프라이를 올린다."
+  ]
+ },
+ {
+  "id": "l30",
+  "name": "어묵볶음 도시락",
+  "meals": [
+   "lunch"
+  ],
+  "difficulty": 1,
+  "minutes": 15,
+  "ingredients": [
+   {
+    "name": "어묵",
+    "amount": 3,
+    "unit": "장",
+    "category": "기타"
+   },
+   {
+    "name": "양파",
+    "amount": 0.25,
+    "unit": "개",
+    "category": "채소·과일"
+   },
+   {
+    "name": "당근",
+    "amount": 0.1,
+    "unit": "개",
+    "category": "채소·과일"
+   },
+   {
+    "name": "밥",
+    "amount": 1,
+    "unit": "공기",
+    "category": "기타"
+   }
+  ],
+  "steps": [
+   "어묵, 양파, 당근을 채 썬다.",
+   "기름에 채소를 먼저 볶다가 어묵을 넣고 간장과 설탕으로 간해 졸인다.",
+   "밥과 함께 담고 깨를 뿌린다."
+  ]
+ },
+ {
+  "id": "l31",
+  "name": "소시지야채볶음",
+  "meals": [
+   "lunch"
+  ],
+  "difficulty": 1,
+  "minutes": 15,
+  "ingredients": [
+   {
+    "name": "소시지",
+    "amount": 3,
+    "unit": "개",
+    "category": "기타"
+   },
+   {
+    "name": "양파",
+    "amount": 0.25,
+    "unit": "개",
+    "category": "채소·과일"
+   },
+   {
+    "name": "파프리카",
+    "amount": 0.25,
+    "unit": "개",
+    "category": "채소·과일"
+   },
+   {
+    "name": "밥",
+    "amount": 1,
+    "unit": "공기",
+    "category": "기타"
+   },
+   {
+    "name": "케첩",
+    "amount": 1,
+    "unit": "큰술",
+    "category": "기타"
+   }
+  ],
+  "steps": [
+   "소시지에 칼집을 내고 채소는 한입 크기로 썬다.",
+   "소시지와 양파를 볶다가 파프리카를 넣는다.",
+   "케첩과 간장 약간을 넣어 볶고 밥과 함께 먹는다."
+  ]
+ },
+ {
+  "id": "l32",
+  "name": "만두국",
+  "meals": [
+   "lunch"
+  ],
+  "difficulty": 2,
+  "minutes": 20,
+  "ingredients": [
+   {
+    "name": "만두",
+    "amount": 6,
+    "unit": "개",
+    "category": "기타"
+   },
+   {
+    "name": "계란",
+    "amount": 1,
+    "unit": "개",
+    "category": "육류·계란"
+   },
+   {
+    "name": "대파",
+    "amount": 0.25,
+    "unit": "대",
+    "category": "채소·과일"
+   }
+  ],
+  "steps": [
+   "물에 간장과 소금을 넣어 끓이고 대파를 넣는다.",
+   "만두를 넣어 떠오를 때까지 끓인다.",
+   "계란을 풀어 줄알을 치고 후추를 뿌린다."
+  ]
+ },
+ {
+  "id": "l33",
+  "name": "군만두와 김치",
+  "meals": [
+   "lunch"
+  ],
+  "difficulty": 1,
+  "minutes": 12,
+  "ingredients": [
+   {
+    "name": "만두",
+    "amount": 8,
+    "unit": "개",
+    "category": "기타"
+   },
+   {
+    "name": "밥",
+    "amount": 1,
+    "unit": "공기",
+    "category": "기타"
+   },
+   {
+    "name": "김치",
+    "amount": 50,
+    "unit": "g",
+    "category": "기타"
+   }
+  ],
+  "steps": [
+   "팬에 기름을 두르고 만두를 올려 중불에서 굽는다.",
+   "물을 약간 넣고 뚜껑을 덮어 익힌 뒤 물기를 날려 바삭하게 한다.",
+   "밥과 김치를 곁들인다."
+  ]
+ },
+ {
+  "id": "l34",
+  "name": "떡국",
+  "meals": [
+   "lunch"
+  ],
+  "difficulty": 2,
+  "minutes": 25,
+  "ingredients": [
+   {
+    "name": "떡국떡",
+    "amount": 150,
+    "unit": "g",
+    "category": "기타"
+   },
+   {
+    "name": "계란",
+    "amount": 1,
+    "unit": "개",
+    "category": "육류·계란"
+   },
+   {
+    "name": "대파",
+    "amount": 0.25,
+    "unit": "대",
+    "category": "채소·과일"
+   },
+   {
+    "name": "김",
+    "amount": 1,
+    "unit": "장",
+    "category": "기타"
+   },
+   {
+    "name": "소고기",
+    "amount": 30,
+    "unit": "g",
+    "category": "육류·계란"
+   }
+  ],
+  "steps": [
+   "소고기를 참기름에 볶다가 물을 붓고 끓여 국간장과 소금으로 간한다.",
+   "불린 떡을 넣어 떠오를 때까지 끓인다.",
+   "계란지단, 대파, 김을 올린다."
+  ]
+ },
+ {
+  "id": "l35",
+  "name": "바나나요거트볼",
+  "meals": [
+   "lunch",
+   "breakfast"
+  ],
+  "difficulty": 1,
+  "minutes": 5,
+  "ingredients": [
+   {
+    "name": "요거트",
+    "amount": 1,
+    "unit": "컵",
+    "category": "기타"
+   },
+   {
+    "name": "바나나",
+    "amount": 1,
+    "unit": "개",
+    "category": "채소·과일"
+   },
+   {
+    "name": "그래놀라",
+    "amount": 3,
+    "unit": "큰술",
+    "category": "기타"
+   }
+  ],
+  "steps": [
+   "바나나를 얇게 썬다.",
+   "그릇에 요거트를 담는다.",
+   "바나나와 그래놀라를 올린다."
+  ]
+ },
+ {
+  "id": "l36",
+  "name": "고구마와 삶은 계란",
+  "meals": [
+   "lunch",
+   "breakfast"
+  ],
+  "difficulty": 1,
+  "minutes": 25,
+  "ingredients": [
+   {
+    "name": "고구마",
+    "amount": 1,
+    "unit": "개",
+    "category": "채소·과일"
+   },
+   {
+    "name": "계란",
+    "amount": 2,
+    "unit": "개",
+    "category": "육류·계란"
+   },
+   {
+    "name": "우유",
+    "amount": 1,
+    "unit": "컵",
+    "category": "기타"
+   }
+  ],
+  "steps": [
+   "고구마를 깨끗이 씻어 찜기에 20분 찐다.",
+   "계란은 끓는 물에 10분 삶아 찬물에 식힌다.",
+   "우유와 함께 먹는다."
+  ]
+ },
+ {
+  "id": "l37",
+  "name": "비빔만두",
+  "meals": [
+   "lunch"
+  ],
+  "difficulty": 1,
+  "minutes": 15,
+  "ingredients": [
+   {
+    "name": "만두",
+    "amount": 6,
+    "unit": "개",
+    "category": "기타"
+   },
+   {
+    "name": "오이",
+    "amount": 0.3,
+    "unit": "개",
+    "category": "채소·과일"
+   },
+   {
+    "name": "고추장",
+    "amount": 1,
+    "unit": "큰술",
+    "category": "기타"
+   }
+  ],
+  "steps": [
+   "만두를 찌거나 구워 익힌다.",
+   "고추장, 설탕, 식초, 참기름으로 양념을 만든다.",
+   "오이채와 만두를 양념에 버무린다."
+  ]
+ },
+ {
+  "id": "l38",
+  "name": "계란국밥",
+  "meals": [
+   "lunch"
+  ],
+  "difficulty": 1,
+  "minutes": 12,
+  "ingredients": [
+   {
+    "name": "밥",
+    "amount": 1,
+    "unit": "공기",
+    "category": "기타"
+   },
+   {
+    "name": "계란",
+    "amount": 2,
+    "unit": "개",
+    "category": "육류·계란"
+   },
+   {
+    "name": "대파",
+    "amount": 0.25,
+    "unit": "대",
+    "category": "채소·과일"
+   },
+   {
+    "name": "김",
+    "amount": 1,
+    "unit": "장",
+    "category": "기타"
+   }
+  ],
+  "steps": [
+   "물에 대파를 넣고 끓여 간장, 소금으로 간한다.",
+   "밥을 넣고 한소끔 끓인 뒤 계란을 풀어 넣는다.",
+   "김을 부숴 올리고 참기름을 두른다."
+  ]
+ }
+]

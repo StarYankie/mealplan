@@ -1,0 +1,431 @@
+[
+ {
+  "id": "b01",
+  "name": "잼토스트",
+  "meals": [
+   "breakfast"
+  ],
+  "difficulty": 1,
+  "minutes": 5,
+  "ingredients": [
+   {
+    "name": "식빵",
+    "amount": 2,
+    "unit": "장",
+    "category": "기타"
+   },
+   {
+    "name": "딸기잼",
+    "amount": 1,
+    "unit": "큰술",
+    "category": "기타"
+   }
+  ],
+  "steps": [
+   "식빵을 토스터나 팬에 노릇하게 굽는다.",
+   "한쪽 면에 잼을 펴 바른다."
+  ]
+ },
+ {
+  "id": "b02",
+  "name": "계란후라이토스트",
+  "meals": [
+   "breakfast"
+  ],
+  "difficulty": 1,
+  "minutes": 8,
+  "ingredients": [
+   {
+    "name": "식빵",
+    "amount": 2,
+    "unit": "장",
+    "category": "기타"
+   },
+   {
+    "name": "계란",
+    "amount": 1,
+    "unit": "개",
+    "category": "육류·계란"
+   },
+   {
+    "name": "슬라이스치즈",
+    "amount": 1,
+    "unit": "장",
+    "category": "기타"
+   }
+  ],
+  "steps": [
+   "식빵을 노릇하게 굽는다.",
+   "계란 프라이를 만든다.",
+   "식빵에 치즈와 프라이를 올려 덮는다."
+  ]
+ },
+ {
+  "id": "b03",
+  "name": "바나나오트밀",
+  "meals": [
+   "breakfast"
+  ],
+  "difficulty": 1,
+  "minutes": 8,
+  "ingredients": [
+   {
+    "name": "오트밀",
+    "amount": 40,
+    "unit": "g",
+    "category": "기타"
+   },
+   {
+    "name": "우유",
+    "amount": 1,
+    "unit": "컵",
+    "category": "기타"
+   },
+   {
+    "name": "바나나",
+    "amount": 1,
+    "unit": "개",
+    "category": "채소·과일"
+   }
+  ],
+  "steps": [
+   "냄비에 오트밀과 우유를 넣고 약불에서 3~5분 저으며 끓인다.",
+   "그릇에 담고 바나나를 썰어 올린다."
+  ]
+ },
+ {
+  "id": "b04",
+  "name": "시리얼과 우유",
+  "meals": [
+   "breakfast"
+  ],
+  "difficulty": 1,
+  "minutes": 3,
+  "ingredients": [
+   {
+    "name": "시리얼",
+    "amount": 40,
+    "unit": "g",
+    "category": "기타"
+   },
+   {
+    "name": "우유",
+    "amount": 1,
+    "unit": "컵",
+    "category": "기타"
+   }
+  ],
+  "steps": [
+   "그릇에 시리얼을 담는다.",
+   "우유를 붓는다."
+  ]
+ },
+ {
+  "id": "b05",
+  "name": "햄에그샌드위치",
+  "meals": [
+   "breakfast"
+  ],
+  "difficulty": 1,
+  "minutes": 12,
+  "ingredients": [
+   {
+    "name": "식빵",
+    "amount": 2,
+    "unit": "장",
+    "category": "기타"
+   },
+   {
+    "name": "햄",
+    "amount": 1,
+    "unit": "장",
+    "category": "기타"
+   },
+   {
+    "name": "계란",
+    "amount": 1,
+    "unit": "개",
+    "category": "육류·계란"
+   },
+   {
+    "name": "슬라이스치즈",
+    "amount": 1,
+    "unit": "장",
+    "category": "기타"
+   }
+  ],
+  "steps": [
+   "식빵을 굽고 햄과 계란 프라이를 익힌다.",
+   "식빵에 치즈, 햄, 프라이를 순서대로 올린다.",
+   "덮어서 반으로 자른다."
+  ]
+ },
+ {
+  "id": "b06",
+  "name": "구운고구마와 우유",
+  "meals": [
+   "breakfast"
+  ],
+  "difficulty": 1,
+  "minutes": 25,
+  "ingredients": [
+   {
+    "name": "고구마",
+    "amount": 1,
+    "unit": "개",
+    "category": "채소·과일"
+   },
+   {
+    "name": "우유",
+    "amount": 1,
+    "unit": "컵",
+    "category": "기타"
+   }
+  ],
+  "steps": [
+   "고구마를 씻어 찜기나 에어프라이어로 익힌다.",
+   "우유와 함께 먹는다."
+  ]
+ },
+ {
+  "id": "b07",
+  "name": "땅콩버터바나나토스트",
+  "meals": [
+   "breakfast"
+  ],
+  "difficulty": 1,
+  "minutes": 6,
+  "ingredients": [
+   {
+    "name": "식빵",
+    "amount": 2,
+    "unit": "장",
+    "category": "기타"
+   },
+   {
+    "name": "땅콩버터",
+    "amount": 1,
+    "unit": "큰술",
+    "category": "기타"
+   },
+   {
+    "name": "바나나",
+    "amount": 1,
+    "unit": "개",
+    "category": "채소·과일"
+   }
+  ],
+  "steps": [
+   "식빵을 구워 땅콩버터를 바른다.",
+   "바나나를 얇게 썰어 올린다."
+  ]
+ },
+ {
+  "id": "b08",
+  "name": "참치주먹밥",
+  "meals": [
+   "breakfast"
+  ],
+  "difficulty": 1,
+  "minutes": 12,
+  "ingredients": [
+   {
+    "name": "밥",
+    "amount": 1,
+    "unit": "공기",
+    "category": "기타"
+   },
+   {
+    "name": "참치캔",
+    "amount": 0.25,
+    "unit": "캔",
+    "category": "기타"
+   },
+   {
+    "name": "김",
+    "amount": 1,
+    "unit": "장",
+    "category": "기타"
+   }
+  ],
+  "steps": [
+   "참치의 기름을 빼고 밥과 참기름, 깨, 소금으로 섞는다.",
+   "한입 크기로 둥글게 뭉친다.",
+   "김가루를 묻힌다."
+  ]
+ },
+ {
+  "id": "b09",
+  "name": "계란죽",
+  "meals": [
+   "breakfast"
+  ],
+  "difficulty": 1,
+  "minutes": 15,
+  "ingredients": [
+   {
+    "name": "밥",
+    "amount": 0.5,
+    "unit": "공기",
+    "category": "기타"
+   },
+   {
+    "name": "계란",
+    "amount": 1,
+    "unit": "개",
+    "category": "육류·계란"
+   },
+   {
+    "name": "당근",
+    "amount": 0.1,
+    "unit": "개",
+    "category": "채소·과일"
+   }
+  ],
+  "steps": [
+   "당근을 잘게 다져 참기름에 볶는다.",
+   "밥과 물을 넣고 5분 끓인다.",
+   "계란을 풀어 넣고 소금으로 간한다."
+  ]
+ },
+ {
+  "id": "b10",
+  "name": "과일요거트",
+  "meals": [
+   "breakfast"
+  ],
+  "difficulty": 1,
+  "minutes": 5,
+  "ingredients": [
+   {
+    "name": "사과",
+    "amount": 0.5,
+    "unit": "개",
+    "category": "채소·과일"
+   },
+   {
+    "name": "바나나",
+    "amount": 1,
+    "unit": "개",
+    "category": "채소·과일"
+   },
+   {
+    "name": "요거트",
+    "amount": 0.5,
+    "unit": "컵",
+    "category": "기타"
+   }
+  ],
+  "steps": [
+   "과일을 한입 크기로 썬다.",
+   "요거트에 버무린다."
+  ]
+ },
+ {
+  "id": "b11",
+  "name": "미니피자토스트",
+  "meals": [
+   "breakfast"
+  ],
+  "difficulty": 1,
+  "minutes": 10,
+  "ingredients": [
+   {
+    "name": "식빵",
+    "amount": 2,
+    "unit": "장",
+    "category": "기타"
+   },
+   {
+    "name": "케첩",
+    "amount": 1,
+    "unit": "큰술",
+    "category": "기타"
+   },
+   {
+    "name": "모짜렐라치즈",
+    "amount": 40,
+    "unit": "g",
+    "category": "기타"
+   },
+   {
+    "name": "양파",
+    "amount": 0.1,
+    "unit": "개",
+    "category": "채소·과일"
+   }
+  ],
+  "steps": [
+   "식빵에 케첩을 바르고 다진 양파를 올린다.",
+   "치즈를 듬뿍 올린다.",
+   "팬이나 오븐에서 치즈가 녹을 때까지 굽는다."
+  ]
+ },
+ {
+  "id": "b12",
+  "name": "야채오믈렛",
+  "meals": [
+   "breakfast"
+  ],
+  "difficulty": 2,
+  "minutes": 12,
+  "ingredients": [
+   {
+    "name": "계란",
+    "amount": 3,
+    "unit": "개",
+    "category": "육류·계란"
+   },
+   {
+    "name": "양파",
+    "amount": 0.25,
+    "unit": "개",
+    "category": "채소·과일"
+   },
+   {
+    "name": "파프리카",
+    "amount": 0.25,
+    "unit": "개",
+    "category": "채소·과일"
+   }
+  ],
+  "steps": [
+   "양파와 파프리카를 잘게 다진다.",
+   "계란을 풀어 소금을 넣고 채소와 섞는다.",
+   "기름 두른 팬에 부어 반으로 접어 익힌다."
+  ]
+ },
+ {
+  "id": "b13",
+  "name": "프렌치토스트",
+  "meals": [
+   "breakfast"
+  ],
+  "difficulty": 1,
+  "minutes": 12,
+  "ingredients": [
+   {
+    "name": "식빵",
+    "amount": 2,
+    "unit": "장",
+    "category": "기타"
+   },
+   {
+    "name": "계란",
+    "amount": 1,
+    "unit": "개",
+    "category": "육류·계란"
+   },
+   {
+    "name": "우유",
+    "amount": 0.3,
+    "unit": "컵",
+    "category": "기타"
+   }
+  ],
+  "steps": [
+   "계란, 우유, 설탕 약간을 섞어 식빵을 담가 적신다.",
+   "버터 대신 기름 두른 팬에 앞뒤로 노릇하게 굽는다."
+  ]
+ }
+]
