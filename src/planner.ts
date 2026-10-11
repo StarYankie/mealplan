@@ -46,12 +46,19 @@ function pick(c: PickCtx): Pick | null {
       for (const i of byId.get(o.recipeId)?.ingredients ?? []) sameWeekNames.add(i.name)
   const overlap = (r: Recipe) => r.ingredients.filter((i) => sameWeekNames.has(i.name)).length
 
+  // 같은 주에 재료가 겹치는 메뉴를 살짝 선호하되(남는 재료 줄이기), 이미 쓴 메뉴는 덜 뽑히게 하는 가중 무작위 선택.
+  const useCount = (r: Recipe) => c.others.filter((o) => o.recipeId === r.id).length
+  const weight = (r: Recipe) => (1 + 0.5 * Math.min(overlap(r), 4)) / (1 + useCount(r))
   const choose = (cands: Recipe[]) => {
     const preferred = cands.filter((r) => r.id !== c.avoid)
     const list = preferred.length > 0 ? preferred : cands
-    const best = Math.max(...list.map(overlap))
-    const top = list.filter((r) => overlap(r) === best)
-    return top[Math.floor(c.rng() * top.length) % top.length]
+    const weights = list.map(weight)
+    let t = c.rng() * weights.reduce((a, b) => a + b, 0)
+    for (let i = 0; i < list.length; i++) {
+      t -= weights[i]
+      if (t < 0) return list[i]
+    }
+    return list[list.length - 1]
   }
 
   for (let d = c.maxDifficulty; d <= 3; d++) {
@@ -91,7 +98,7 @@ export function generatePlan(o: {
       if (slot.people <= 0) continue
       const kept = keep.find((k) => k.date === date && k.meal === meal)
       if (kept) {
-        meals.push(kept)
+        meals.push({ ...kept, people: slot.people })
         continue
       }
       const others = [...meals, ...keep.filter((k) => k.date > date)]
@@ -110,7 +117,7 @@ export function generatePlan(o: {
   if (relaxedCount > 0) warnings.push(`${relaxedCount}끼는 난이도 조건에 맞는 레시피가 부족해 더 어려운 메뉴로 채웠어요.`)
   if (repeatCount > 0) warnings.push(`${repeatCount}끼는 레시피가 부족해 7일 안에 같은 메뉴가 반복돼요.`)
   if (missing > 0) warnings.push(`${missing}끼는 맞는 레시피가 없어 비워 뒀어요.`)
-  return { startDate: o.startDate, weeks: o.weeks, meals, warnings }
+  return { startDate: o.startDate, weeks: o.weeks, meals, warnings, settings: o.settings }
 }
 
 export function rerollMeal(

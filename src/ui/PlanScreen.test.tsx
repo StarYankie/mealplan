@@ -99,4 +99,14 @@ describe('PlanScreen', () => {
     await userEvent.click(screen.getByRole('button', { name: '식단 만들기' }))
     expect(seen.at(-1)!.startDate).toBe('2026-12-31')
   })
+
+  it('tells the user when settings changed after the plan was made', async () => {
+    const { rerender } = render(<Harness />)
+    await userEvent.click(screen.getByRole('button', { name: '식단 만들기' }))
+    expect(screen.queryByText(/설정이 바뀌었어요/)).not.toBeInTheDocument()
+    const changed = defaultSettings()
+    changed[0].dinner.people = 5
+    rerender(<Harness settings={changed} />)
+    expect(screen.getByText(/설정이 바뀌었어요/)).toBeInTheDocument()
+  })
 })

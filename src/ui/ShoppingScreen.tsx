@@ -8,11 +8,12 @@ interface Props {
   recipes: Recipe[]
   pantry: Set<string>
   onTogglePantry: (name: string) => void
+  bought: Set<string>
+  onToggleBought: (key: string) => void
 }
 
-export function ShoppingScreen({ plan, recipes, pantry, onTogglePantry }: Props) {
+export function ShoppingScreen({ plan, recipes, pantry, onTogglePantry, bought, onToggleBought }: Props) {
   const [week, setWeek] = useState(0)
-  const [bought, setBought] = useState<Set<string>>(new Set())
 
   if (!plan) {
     return (
@@ -26,13 +27,6 @@ export function ShoppingScreen({ plan, recipes, pantry, onTogglePantry }: Props)
   const weeks = weekCount(plan)
   const current = Math.min(week, weeks - 1)
   const items = buildShoppingList(plan, recipes, current, pantry)
-  const toggleBought = (key: string) =>
-    setBought((prev) => {
-      const next = new Set(prev)
-      if (next.has(key)) next.delete(key)
-      else next.add(key)
-      return next
-    })
 
   const categories = [...new Set(items.map((i) => i.category))]
 
@@ -56,7 +50,7 @@ export function ShoppingScreen({ plan, recipes, pantry, onTogglePantry }: Props)
           {items
             .filter((i) => i.category === cat)
             .map((i) => {
-              const key = `${current}|${i.name}|${i.unit}`
+              const key = `${current}|${i.name}|${i.unit}|${i.amount}`
               const text = `${i.name} ${fmtAmount(i.amount)}${i.unit}`
               return (
                 <div className={bought.has(key) ? 'item done' : 'item'} key={key}>
@@ -65,7 +59,7 @@ export function ShoppingScreen({ plan, recipes, pantry, onTogglePantry }: Props)
                     id={key}
                     aria-label={text}
                     checked={bought.has(key)}
-                    onChange={() => toggleBought(key)}
+                    onChange={() => onToggleBought(key)}
                   />
                   <label className="label" htmlFor={key}>
                     {text}

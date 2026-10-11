@@ -50,6 +50,9 @@ export function PlanScreen({ settings, recipes, plan, onPlan }: Props) {
       </div>
 
       {!plan && <p className="hint">아직 식단이 없어요. 시작일과 기간을 정하고 식단 만들기를 눌러 보세요.</p>}
+      {plan?.settings && JSON.stringify(plan.settings) !== JSON.stringify(settings) && (
+        <p className="warn">설정이 바뀌었어요. 식단 만들기를 누르면 새 설정이 반영돼요. (고정한 메뉴는 유지돼요)</p>
+      )}
       {plan?.warnings.map((w) => (
         <p className="warn" key={w}>
           {w}

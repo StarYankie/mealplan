@@ -13,8 +13,30 @@ function validSettings(s: unknown): s is WeekSettings {
     s.every((d) => d && MEALS.every((m) => typeof d[m]?.people === 'number' && [1, 2, 3].includes(d[m]?.maxDifficulty)))
   )
 }
-const validPlan = (p: unknown): p is Plan =>
-  !!p && typeof p === 'object' && Array.isArray((p as Plan).meals) && typeof (p as Plan).startDate === 'string'
+function validMeal(m: any): boolean {
+  return (
+    !!m &&
+    typeof m.date === 'string' &&
+    MEALS.includes(m.meal) &&
+    typeof m.recipeId === 'string' &&
+    typeof m.people === 'number' &&
+    typeof m.locked === 'boolean' &&
+    typeof m.relaxed === 'boolean'
+  )
+}
+function validPlan(p: any): p is Plan {
+  return (
+    !!p &&
+    typeof p === 'object' &&
+    typeof p.startDate === 'string' &&
+    (p.weeks === 1 || p.weeks === 4) &&
+    Array.isArray(p.warnings) &&
+    p.warnings.every((w: unknown) => typeof w === 'string') &&
+    Array.isArray(p.meals) &&
+    p.meals.every(validMeal) &&
+    (p.settings === undefined || validSettings(p.settings))
+  )
+}
 
 export function useAppState(store: KeyValueStore = localStore, recipes: Recipe[] = bundledRecipes) {
   const [settings, setSettingsState] = useState<WeekSettings>(() => {
@@ -28,6 +50,11 @@ export function useAppState(store: KeyValueStore = localStore, recipes: Recipe[]
   const [pantry, setPantryState] = useState<Set<string>>(() => {
     const p = loadJSON<unknown>(store, KEYS.pantry, [])
     return new Set(Array.isArray(p) ? p.filter((x): x is string => typeof x === 'string') : [])
+  })
+
+  const [bought, setBoughtState] = useState<Set<string>>(() => {
+    const b = loadJSON<unknown>(store, KEYS.bought, [])
+    return new Set(Array.isArray(b) ? b.filter((x): x is string => typeof x === 'string') : [])
   })
 
   const setSettings = useCallback(
@@ -57,5 +84,18 @@ export function useAppState(store: KeyValueStore = localStore, recipes: Recipe[]
     [store],
   )
 
-  return { recipes, settings, setSettings, plan, setPlan, pantry, togglePantry }
+  const toggleBought = useCallback(
+    (key: string) => {
+      setBoughtState((prev) => {
+        const next = new Set(prev)
+        if (next.has(key)) next.delete(key)
+        else next.add(key)
+        saveJSON(store, KEYS.bought, [...next])
+        return next
+      })
+    },
+    [store],
+  )
+
+  return { recipes, settings, setSettings, plan, setPlan, pantry, togglePantry, bought, toggleBought }
 }

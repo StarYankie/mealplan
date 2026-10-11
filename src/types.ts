@@ -41,4 +41,5 @@ export interface Plan {
   weeks: 1 | 4
   meals: PlannedMeal[]
   warnings: string[]
+  settings?: WeekSettings // 식단을 만들 때의 설정 (바뀌었는지 알려 주기 위함)
 }

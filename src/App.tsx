@@ -21,7 +21,10 @@ export default function App() {
         <PlanScreen settings={app.settings} recipes={app.recipes} plan={app.plan} onPlan={app.setPlan} />
       )}
       {tab === 'shopping' && (
-        <ShoppingScreen plan={app.plan} recipes={app.recipes} pantry={app.pantry} onTogglePantry={app.togglePantry} />
+        <ShoppingScreen plan={app.plan} recipes={app.recipes} pantry={app.pantry} onTogglePantry={app.togglePantry}
+          bought={app.bought}
+          onToggleBought={app.toggleBought}
+        />
       )}
       <nav className="tabs">
         {tabs.map((t) => (

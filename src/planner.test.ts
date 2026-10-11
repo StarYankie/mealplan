@@ -121,3 +121,20 @@ describe('nextMonday', () => {
     expect(nextMonday(new Date(2026, 9, 14))).toBe('2026-10-19') // 수요일
   })
 })
+
+describe('settings changes and locks', () => {
+  const recipes = [...many('L', 'lunch', 1, 10), ...many('D', 'dinner', 2, 10)]
+  it('updates the head count of a kept meal to the current setting', () => {
+    const locked = { date: '2026-10-13', meal: 'dinner' as const, recipeId: 'D3', people: 2, locked: true, relaxed: false }
+    const s = defaultSettings()
+    s[1].dinner.people = 4 // 화요일
+    const plan = generatePlan({ settings: s, recipes, startDate: '2026-10-12', weeks: 1, rng: seq(), keep: [locked] })
+    const kept = plan.meals.find((m) => m.date === '2026-10-13' && m.meal === 'dinner')!
+    expect(kept).toMatchObject({ recipeId: 'D3', people: 4, locked: true })
+  })
+  it('records the settings the plan was built with', () => {
+    const s = defaultSettings()
+    const plan = generatePlan({ settings: s, recipes, startDate: '2026-10-12', weeks: 1, rng: seq() })
+    expect(plan.settings).toEqual(s)
+  })
+})

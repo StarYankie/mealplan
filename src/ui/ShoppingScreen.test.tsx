@@ -31,11 +31,25 @@ const plan: Plan = {
 
 function Harness({ p = plan as Plan | null, initialPantry = [] as string[] }) {
   const [pantry, setPantry] = useState(new Set(initialPantry))
+  const [bought, setBought] = useState<Set<string>>(new Set())
+  const [shown, setShown] = useState(true)
   return (
+    <>
+      <button onClick={() => setShown((v) => !v)}>토글 화면</button>
+      {shown && (
     <ShoppingScreen
       plan={p}
       recipes={recipes}
       pantry={pantry}
+      bought={bought}
+      onToggleBought={(k) =>
+        setBought((prev) => {
+          const next = new Set(prev)
+          if (next.has(k)) next.delete(k)
+          else next.add(k)
+          return next
+        })
+      }
       onTogglePantry={(n) =>
         setPantry((prev) => {
           const next = new Set(prev)
@@ -45,6 +59,8 @@ function Harness({ p = plan as Plan | null, initialPantry = [] as string[] }) {
         })
       }
     />
+      )}
+    </>
   )
 }
 
@@ -77,6 +93,14 @@ describe('ShoppingScreen', () => {
     expect(box).not.toBeChecked()
     await userEvent.click(box)
     expect(box).toBeChecked()
+  })
+
+  it('keeps checkmarks when the screen is left and reopened', async () => {
+    render(<Harness />)
+    await userEvent.click(screen.getByRole('checkbox', { name: '양파 2개' }))
+    await userEvent.click(screen.getByRole('button', { name: '토글 화면' }))
+    await userEvent.click(screen.getByRole('button', { name: '토글 화면' }))
+    expect(screen.getByRole('checkbox', { name: '양파 2개' })).toBeChecked()
   })
 })
 

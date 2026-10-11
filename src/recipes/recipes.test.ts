@@ -51,3 +51,48 @@ describe('bundled recipes with the planner', () => {
     expect(plan.warnings).toEqual([])
   })
 })
+
+function seeded(seed: number) {
+  return () => {
+    seed = (seed + 0x6d2b79f5) | 0
+    let t = Math.imul(seed ^ (seed >>> 15), 1 | seed)
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296
+  }
+}
+
+describe('variety with the bundled recipes', () => {
+  it('does not put the same dishes in every one-week plan', async () => {
+    const { generatePlan } = await import('../planner')
+    const { defaultSettings } = await import('../settings')
+    const counts = new Map<string, number>()
+    for (let s = 0; s < 20; s++) {
+      const plan = generatePlan({ settings: defaultSettings(), recipes: all, startDate: '2026-10-12', weeks: 1, rng: seeded(s) })
+      for (const id of new Set(plan.meals.map((m) => m.recipeId))) counts.set(id, (counts.get(id) ?? 0) + 1)
+    }
+    expect(Math.max(...counts.values())).toBeLessThanOrEqual(12)
+    expect(counts.size).toBeGreaterThanOrEqual(60)
+  })
+
+  it('uses a recipe at most three times in a four-week plan', async () => {
+    const { generatePlan } = await import('../planner')
+    const { defaultSettings } = await import('../settings')
+    const plan = generatePlan({ settings: defaultSettings(), recipes: all, startDate: '2026-10-12', weeks: 4, rng: seeded(7) })
+    const counts = new Map<string, number>()
+    for (const m of plan.meals) counts.set(m.recipeId, (counts.get(m.recipeId) ?? 0) + 1)
+    expect(Math.max(...counts.values())).toBeLessThanOrEqual(3)
+  })
+
+  it('offers many different dishes when rerolling the same meal', async () => {
+    const { generatePlan, rerollMeal } = await import('../planner')
+    const { defaultSettings } = await import('../settings')
+    const settings = defaultSettings()
+    let plan = generatePlan({ settings, recipes: all, startDate: '2026-10-12', weeks: 1, rng: seeded(1) })
+    const seen = new Set([plan.meals[0].recipeId])
+    for (let i = 0; i < 30; i++) {
+      plan = rerollMeal(plan, 0, { settings, recipes: all, rng: seeded(100 + i) })
+      seen.add(plan.meals[0].recipeId)
+    }
+    expect(seen.size).toBeGreaterThanOrEqual(5)
+  })
+})
