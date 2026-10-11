@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { PlanScreen } from './ui/PlanScreen'
 import { SettingsScreen } from './ui/SettingsScreen'
+import { ShoppingScreen } from './ui/ShoppingScreen'
 import { useAppState } from './ui/useAppState'
 
 type Tab = 'settings' | 'plan' | 'shopping'
@@ -18,6 +19,9 @@ export default function App() {
       {tab === 'settings' && <SettingsScreen settings={app.settings} onChange={app.setSettings} />}
       {tab === 'plan' && (
         <PlanScreen settings={app.settings} recipes={app.recipes} plan={app.plan} onPlan={app.setPlan} />
+      )}
+      {tab === 'shopping' && (
+        <ShoppingScreen plan={app.plan} recipes={app.recipes} pantry={app.pantry} onTogglePantry={app.togglePantry} />
       )}
       <nav className="tabs">
         {tabs.map((t) => (
