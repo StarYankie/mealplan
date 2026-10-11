@@ -78,11 +78,11 @@ export function ShoppingScreen({ plan, recipes, pantry, onTogglePantry, bought, 
                     {text}
                   </label>
                   <button
-                    aria-label={`${i.name} 집에 있음`}
+                    aria-label={`${i.name} 안 사도 돼요`}
                     onClick={() => onTogglePantry(i.name)}
                     className="flex-none rounded-lg px-2 py-1.5 text-xs font-semibold text-mute"
                   >
-                    집에 있어요
+                    안 사도 돼요
                   </button>
                 </div>
               )
@@ -92,16 +92,17 @@ export function ShoppingScreen({ plan, recipes, pantry, onTogglePantry, bought, 
 
       {pantry.size > 0 && (
         <div className="pb-4">
-          <div className="px-5 pb-2 pt-6 text-xs font-semibold text-mute">집에 있는 재료 (장보기에서 빠져 있어요)</div>
+          <div className="px-5 pt-6 text-xs font-semibold text-mute">안 사도 되는 재료</div>
+          <p className="px-5 pb-2 text-xs text-mute">집에 있어서 목록에서 뺐어요. 모든 주에서 빠져요.</p>
           <div className="flex flex-wrap gap-1.5 px-5">
             {[...pantry].map((name) => (
               <button
                 key={name}
-                aria-label={`${name} 장보기에 다시 넣기`}
+                aria-label={`${name} 다시 사기`}
                 onClick={() => onTogglePantry(name)}
                 className="rounded-full bg-line px-3 py-1.5 text-[13px] font-semibold text-sub"
               >
-                {name} ✕
+                {name} 다시 사기
               </button>
             ))}
           </div>

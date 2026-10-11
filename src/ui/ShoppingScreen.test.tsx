@@ -81,9 +81,11 @@ describe('ShoppingScreen', () => {
 
   it('removes an item marked as at home and lets it be added back', async () => {
     render(<Harness />)
-    await userEvent.click(screen.getByRole('button', { name: '양파 집에 있음' }))
+    await userEvent.click(screen.getByRole('button', { name: '양파 안 사도 돼요' }))
     expect(screen.queryByText('양파 2개')).not.toBeInTheDocument()
-    await userEvent.click(screen.getByRole('button', { name: '양파 장보기에 다시 넣기' }))
+    expect(screen.getByText('안 사도 되는 재료')).toBeInTheDocument()
+    await userEvent.click(screen.getByRole('button', { name: '양파 다시 사기' }))
+    expect(screen.queryByText('안 사도 되는 재료')).not.toBeInTheDocument()
     expect(screen.getByText('양파 2개')).toBeInTheDocument()
   })
 
