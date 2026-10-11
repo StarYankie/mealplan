@@ -9,6 +9,12 @@ export interface ShoppingItem {
 
 const CATEGORY_ORDER: Category[] = ['채소·과일', '육류·계란', '기타']
 const DAY_MS = 86400000
+// 낱개로만 살 수 있는 단위는 올림해서 보여 준다 (g, 큰술, 컵 등은 그대로).
+const COUNTABLE = new Set(['개', '대', '모', '봉', '캔', '장', '쪽', '단', '조각', '공기'])
+const forShop = (amount: number, unit: string) => {
+  const rounded = Math.round(amount * 100) / 100
+  return COUNTABLE.has(unit) ? Math.ceil(rounded) : rounded
+}
 
 export const weekCount = (plan: Plan): number => plan.weeks
 
@@ -33,6 +39,6 @@ export function buildShoppingList(plan: Plan, recipes: Recipe[], weekIndex: numb
   }
 
   return [...sums.values()]
-    .map((i) => ({ ...i, amount: Math.round(i.amount * 100) / 100 }))
+    .map((i) => ({ ...i, amount: forShop(i.amount, i.unit) }))
     .sort((a, b) => CATEGORY_ORDER.indexOf(a.category) - CATEGORY_ORDER.indexOf(b.category) || a.name.localeCompare(b.name, 'ko'))
 }

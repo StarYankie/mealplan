@@ -25,7 +25,7 @@ describe('buildShoppingList', () => {
     const p = plan([m('2026-10-12', 'egg', 'lunch', 2), m('2026-10-13', 'egg', 'lunch', 1)])
     const list = buildShoppingList(p, recipes, 0, new Set())
     expect(list.find((i) => i.name === '계란')).toMatchObject({ amount: 6, unit: '개' })
-    expect(list.find((i) => i.name === '양파')).toMatchObject({ amount: 1.5, unit: '개' })
+    expect(list.find((i) => i.name === '양파')).toMatchObject({ amount: 2, unit: '개' }) // 0.5×3명 = 1.5 → 올림
   })
 
   it('keeps different units on separate lines', () => {
@@ -55,6 +55,28 @@ describe('buildShoppingList', () => {
   it('skips unknown recipe ids without crashing', () => {
     const p = plan([m('2026-10-12', 'gone', 'lunch', 2), m('2026-10-12', 'egg', 'lunch', 1)])
     expect(buildShoppingList(p, recipes, 0, new Set()).some((i) => i.name === '계란')).toBe(true)
+  })
+})
+
+describe('rounding for the shop', () => {
+  const r = (amount: number, unit: string): Recipe => ({
+    id: 'r', name: 'r', meals: ['dinner'], difficulty: 1, minutes: 5, steps: ['x'],
+    ingredients: [{ name: '재료', amount, unit, category: '기타' }],
+  })
+  const list = (amount: number, unit: string, people = 1) =>
+    buildShoppingList(plan([m('2026-10-12', 'r', 'dinner', people)]), [r(amount, unit)], 0, new Set())[0]
+
+  it('rounds countable units up', () => {
+    expect(list(0.25, '대', 3).amount).toBe(1) // 0.75대 → 1대
+    expect(list(0.3, '개', 1).amount).toBe(1)
+    expect(list(0.5, '모', 3).amount).toBe(2)
+  })
+  it('does not round up float noise on whole numbers', () => {
+    expect(list(0.1, '개', 30).amount).toBe(3) // 0.1*30 = 3.0000000000000004
+  })
+  it('keeps decimals for measured units', () => {
+    expect(list(0.5, '큰술', 1).amount).toBe(0.5)
+    expect(list(0.5, '컵', 3).amount).toBe(1.5)
   })
 })
 
