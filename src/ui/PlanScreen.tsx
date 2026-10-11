@@ -13,7 +13,7 @@ interface Props {
 }
 
 const DOT: Record<Meal, string> = {
-  breakfast: 'bg-amber-50 text-amber-700',
+  breakfast: 'bg-amber-50 text-amber-700 dark:bg-amber-500/15 dark:text-amber-300',
   lunch: 'bg-toss-soft text-toss',
   dinner: 'bg-line text-sub',
 }
@@ -45,7 +45,7 @@ export function PlanScreen({ settings, recipes, plan, onPlan }: Props) {
   const settingsChanged = !!plan?.settings && JSON.stringify(plan.settings) !== JSON.stringify(settings)
 
   const notice = (text: string) => (
-    <p key={text} className="mx-5 mb-2 rounded-xl bg-amber-50 px-4 py-3 text-[13px] leading-snug text-amber-800">
+    <p key={text} className="mx-5 mb-2 rounded-xl bg-amber-50 px-4 py-3 text-[13px] leading-snug text-amber-800 dark:bg-amber-500/15 dark:text-amber-200">
       {text}
     </p>
   )
@@ -70,7 +70,7 @@ export function PlanScreen({ settings, recipes, plan, onPlan }: Props) {
             key={w}
             aria-pressed={weeks === w}
             onClick={() => setWeeks(w)}
-            className={`rounded-full px-4 py-1.5 text-[13px] font-semibold ${weeks === w ? 'bg-ink text-white' : 'bg-line text-sub'}`}
+            className={`rounded-full px-4 py-1.5 text-[13px] font-semibold ${weeks === w ? 'bg-ink text-surface' : 'bg-line text-sub'}`}
           >
             {w}주
           </button>
@@ -114,7 +114,7 @@ export function PlanScreen({ settings, recipes, plan, onPlan }: Props) {
           )
         })}
 
-      <div className="fixed inset-x-0 bottom-[58px] z-10 mx-auto max-w-md bg-gradient-to-t from-white via-white to-transparent px-4 pb-3 pt-6">
+      <div className="fixed inset-x-0 bottom-[58px] z-10 mx-auto max-w-md bg-gradient-to-t from-surface via-surface to-transparent px-4 pb-3 pt-6">
         <button className="w-full rounded-2xl bg-toss py-4 text-[15px] font-bold text-white active:brightness-95" onClick={make}>
           {plan ? '식단 다시 만들기' : '식단 만들기'}
         </button>

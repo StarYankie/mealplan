@@ -51,3 +51,21 @@ describe('useAppState', () => {
     expect(second.result.current.bought.has('0|양파|개|2')).toBe(false)
   })
 })
+
+describe('useAppState theme', () => {
+  it('defaults to following the system', () => {
+    const { result } = renderHook(() => useAppState(memStore(), []))
+    expect(result.current.theme).toBe('system')
+  })
+  it('ignores an invalid stored theme', () => {
+    const { result } = renderHook(() => useAppState(memStore({ [KEYS.theme]: '"purple"' }), []))
+    expect(result.current.theme).toBe('system')
+  })
+  it('persists the chosen theme', () => {
+    const store = memStore()
+    const first = renderHook(() => useAppState(store, []))
+    act(() => first.result.current.setTheme('dark'))
+    const second = renderHook(() => useAppState(store, []))
+    expect(second.result.current.theme).toBe('dark')
+  })
+})

@@ -10,6 +10,8 @@ function Harness({ onChange }: { onChange?: (s: WeekSettings) => void }) {
   return (
     <SettingsScreen
       settings={s}
+      theme="system"
+      onThemeChange={() => {}}
       onChange={(n) => {
         setS(n)
         onChange?.(n)
@@ -79,5 +81,16 @@ describe('SettingsScreen', () => {
     await userEvent.click(within(dinner).getByRole('button', { name: '공들임' }))
     expect(seen.at(-1)![0].dinner.maxDifficulty).toBe(3)
     expect(within(dinner).getByRole('button', { name: '공들임' })).toHaveAttribute('aria-pressed', 'true')
+  })
+})
+
+describe('SettingsScreen theme', () => {
+  it('shows the three screen modes and reports the chosen one', async () => {
+    const picked: string[] = []
+    render(<SettingsScreen settings={defaultSettings()} onChange={() => {}} theme="system" onThemeChange={(t) => picked.push(t)} />)
+    const group = screen.getByRole('group', { name: '화면 모드' })
+    expect(within(group).getByRole('button', { name: '시스템 설정' })).toHaveAttribute('aria-pressed', 'true')
+    await userEvent.click(within(group).getByRole('button', { name: '다크' }))
+    expect(picked).toEqual(['dark'])
   })
 })

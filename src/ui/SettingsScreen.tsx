@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { DAY_LONG, DIFFICULTY_LABEL, MEAL_LABEL } from '../format'
-import type { Difficulty, Meal, Slot, WeekSettings } from '../types'
+import type { Difficulty, Meal, Slot, ThemePref, WeekSettings } from '../types'
 import { Sheet } from './Sheet'
 
 const MEALS: Meal[] = ['breakfast', 'lunch', 'dinner']
@@ -12,7 +12,16 @@ function summary(day: Record<Meal, Slot>): string {
     .join(' · ')
 }
 
-export function SettingsScreen({ settings, onChange }: { settings: WeekSettings; onChange: (s: WeekSettings) => void }) {
+const THEME_LABEL: Record<ThemePref, string> = { system: '시스템 설정', light: '라이트', dark: '다크' }
+
+interface Props {
+  settings: WeekSettings
+  onChange: (s: WeekSettings) => void
+  theme: ThemePref
+  onThemeChange: (t: ThemePref) => void
+}
+
+export function SettingsScreen({ settings, onChange, theme, onThemeChange }: Props) {
   const [open, setOpen] = useState<number | null>(null)
 
   const update = (day: number, meal: Meal, patch: Partial<Slot>) =>
@@ -42,6 +51,22 @@ export function SettingsScreen({ settings, onChange }: { settings: WeekSettings;
           </li>
         ))}
       </ul>
+
+      <div role="group" aria-label="화면 모드" className="mt-6 px-5 pb-2">
+        <div className="pb-1 text-xs font-semibold text-mute">화면 모드</div>
+        <div className="flex rounded-xl bg-line p-[3px]">
+          {(['system', 'light', 'dark'] as ThemePref[]).map((t) => (
+            <button
+              key={t}
+              aria-pressed={theme === t}
+              onClick={() => onThemeChange(t)}
+              className={`flex-1 rounded-[10px] py-2 text-[13px] font-semibold ${theme === t ? 'bg-surface text-ink shadow-sm' : 'text-mute'}`}
+            >
+              {THEME_LABEL[t]}
+            </button>
+          ))}
+        </div>
+      </div>
 
       {open !== null && (
         <Sheet label={`${DAY_LONG[open]} 설정`} onClose={() => setOpen(null)}>
@@ -99,7 +124,7 @@ export function SettingsScreen({ settings, onChange }: { settings: WeekSettings;
                           aria-pressed={slot.maxDifficulty === d}
                           onClick={() => update(open, meal, { maxDifficulty: d })}
                           className={`flex-1 rounded-[10px] py-2 text-[13px] font-semibold ${
-                            slot.maxDifficulty === d ? 'bg-white text-ink shadow-sm' : 'text-mute'
+                            slot.maxDifficulty === d ? 'bg-surface text-ink shadow-sm' : 'text-mute'
                           }`}
                         >
                           {DIFFICULTY_LABEL[d]}

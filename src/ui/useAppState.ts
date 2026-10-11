@@ -2,7 +2,8 @@ import { useCallback, useState } from 'react'
 import { bundledRecipes } from '../recipes'
 import { defaultSettings } from '../settings'
 import { KEYS, loadJSON, localStore, saveJSON, type KeyValueStore } from '../storage'
-import type { Plan, Recipe, WeekSettings } from '../types'
+import { THEME_PREFS } from '../theme'
+import type { Plan, Recipe, ThemePref, WeekSettings } from '../types'
 
 const MEALS = ['breakfast', 'lunch', 'dinner'] as const
 
@@ -57,6 +58,11 @@ export function useAppState(store: KeyValueStore = localStore, recipes: Recipe[]
     return new Set(Array.isArray(b) ? b.filter((x): x is string => typeof x === 'string') : [])
   })
 
+  const [theme, setThemeState] = useState<ThemePref>(() => {
+    const t = loadJSON<unknown>(store, KEYS.theme, 'system')
+    return THEME_PREFS.includes(t as ThemePref) ? (t as ThemePref) : 'system'
+  })
+
   const setSettings = useCallback(
     (s: WeekSettings) => {
       saveJSON(store, KEYS.settings, s)
@@ -84,6 +90,14 @@ export function useAppState(store: KeyValueStore = localStore, recipes: Recipe[]
     [store],
   )
 
+  const setTheme = useCallback(
+    (t: ThemePref) => {
+      saveJSON(store, KEYS.theme, t)
+      setThemeState(t)
+    },
+    [store],
+  )
+
   const toggleBought = useCallback(
     (key: string) => {
       setBoughtState((prev) => {
@@ -97,5 +111,5 @@ export function useAppState(store: KeyValueStore = localStore, recipes: Recipe[]
     [store],
   )
 
-  return { recipes, settings, setSettings, plan, setPlan, pantry, togglePantry, bought, toggleBought }
+  return { recipes, settings, setSettings, plan, setPlan, pantry, togglePantry, bought, toggleBought, theme, setTheme }
 }

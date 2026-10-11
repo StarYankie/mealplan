@@ -21,3 +21,16 @@ describe('App', () => {
     expect(screen.getByText(/먼저 식단을 만드세요/)).toBeInTheDocument()
   })
 })
+
+describe('App dark mode', () => {
+  afterEach(() => document.documentElement.classList.remove('dark'))
+  it('applies the dark class when 다크 is chosen in 설정', async () => {
+    localStorage.clear()
+    render(<App />)
+    await userEvent.click(screen.getByRole('button', { name: '설정' }))
+    await userEvent.click(screen.getByRole('button', { name: '다크' }))
+    expect(document.documentElement.classList.contains('dark')).toBe(true)
+    await userEvent.click(screen.getByRole('button', { name: '라이트' }))
+    expect(document.documentElement.classList.contains('dark')).toBe(false)
+  })
+})

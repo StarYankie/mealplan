@@ -1,6 +1,7 @@
 export type Day = 0 | 1 | 2 | 3 | 4 | 5 | 6 // 0=월 … 6=일
 export type Meal = 'breakfast' | 'lunch' | 'dinner'
 export type Difficulty = 1 | 2 | 3 // 1=간단 2=보통 3=공들임
+export type ThemePref = 'system' | 'light' | 'dark'
 export type Category = '채소·과일' | '육류·계란' | '기타'
 
 export interface Ingredient {

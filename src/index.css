@@ -1,13 +1,38 @@
 @import 'tailwindcss';
 
-@theme {
+/* 수동 다크모드: <html class="dark"> 일 때 켜진다 (src/theme.ts) */
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --c-surface: #ffffff;
+  --c-ink: #191f28;
+  --c-sub: #4e5968;
+  --c-mute: #8b95a1;
+  --c-faint: #b0b8c1;
+  --c-line: #f2f4f6;
+  --c-toss-soft: #e8f3ff;
+  color-scheme: light;
+}
+.dark {
+  --c-surface: #17171c;
+  --c-ink: #f2f4f6;
+  --c-sub: #b0b8c1;
+  --c-mute: #8b95a1;
+  --c-faint: #6b7684;
+  --c-line: #2a2a33;
+  --c-toss-soft: #1c2c47;
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-surface: var(--c-surface);
+  --color-ink: var(--c-ink);
+  --color-sub: var(--c-sub);
+  --color-mute: var(--c-mute);
+  --color-faint: var(--c-faint);
+  --color-line: var(--c-line);
+  --color-toss-soft: var(--c-toss-soft);
   --color-toss: #3182f6;
-  --color-toss-soft: #e8f3ff;
-  --color-ink: #191f28;
-  --color-sub: #4e5968;
-  --color-mute: #8b95a1;
-  --color-faint: #b0b8c1;
-  --color-line: #f2f4f6;
   --font-sans: system-ui, 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
 }
 
@@ -16,8 +41,8 @@ html {
 }
 body {
   margin: 0;
-  background: #fff;
-  color: var(--color-ink);
+  background: var(--c-surface);
+  color: var(--c-ink);
 }
 button {
   font: inherit;

@@ -3,7 +3,7 @@ export interface KeyValueStore {
   set(key: string, value: string): void
 }
 
-export const KEYS = { settings: 'mp.settings', plan: 'mp.plan', pantry: 'mp.pantry', bought: 'mp.bought' } as const
+export const KEYS = { settings: 'mp.settings', plan: 'mp.plan', pantry: 'mp.pantry', bought: 'mp.bought', theme: 'mp.theme' } as const
 
 export const localStore: KeyValueStore = {
   get(key) {

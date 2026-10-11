@@ -14,7 +14,7 @@ export function Sheet({ label, onClose, children }: { label: string; onClose: ()
         role="dialog"
         aria-modal="true"
         aria-label={label}
-        className="relative max-h-[88vh] w-full max-w-md overflow-y-auto rounded-t-3xl bg-white px-5 pb-6 pt-5 shadow-2xl"
+        className="relative max-h-[88vh] w-full max-w-md overflow-y-auto rounded-t-3xl bg-surface px-5 pb-6 pt-5 shadow-2xl"
       >
         {children}
       </div>

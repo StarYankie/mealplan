@@ -46,7 +46,7 @@ export function ShoppingScreen({ plan, recipes, pantry, onTogglePantry, bought, 
               key={w}
               aria-pressed={w === current}
               onClick={() => setWeek(w)}
-              className={`rounded-full px-4 py-1.5 text-[13px] font-semibold ${w === current ? 'bg-ink text-white' : 'bg-line text-sub'}`}
+              className={`rounded-full px-4 py-1.5 text-[13px] font-semibold ${w === current ? 'bg-ink text-surface' : 'bg-line text-sub'}`}
             >
               {w + 1}주차
             </button>

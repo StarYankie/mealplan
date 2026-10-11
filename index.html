@@ -4,6 +4,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>우리집 식단</title>
+    <script>
+      // 화면이 번쩍이지 않게, 앱이 뜨기 전에 저장된 화면 모드를 먼저 적용한다. (src/theme.ts 와 같은 규칙)
+      try {
+        var t = JSON.parse(localStorage.getItem('mp.theme') || '"system"')
+        var sys = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (t === 'dark' || (t !== 'light' && sys)) document.documentElement.classList.add('dark')
+      } catch (e) {}
+    </script>
   </head>
   <body>
     <div id="root"></div>
