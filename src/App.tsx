@@ -4,31 +4,39 @@ import { SettingsScreen } from './ui/SettingsScreen'
 import { ShoppingScreen } from './ui/ShoppingScreen'
 import { useAppState } from './ui/useAppState'
 
-type Tab = 'settings' | 'plan' | 'shopping'
+type Tab = 'plan' | 'shopping' | 'settings'
+
+const TABS: { key: Tab; label: string }[] = [
+  { key: 'plan', label: '식단' },
+  { key: 'shopping', label: '장보기' },
+  { key: 'settings', label: '설정' },
+]
 
 export default function App() {
   const app = useAppState()
-  const [tab, setTab] = useState<Tab>('settings')
-  const tabs: { key: Tab; label: string }[] = [
-    { key: 'settings', label: '설정' },
-    { key: 'plan', label: '식단' },
-    { key: 'shopping', label: '장보기' },
-  ]
+  const [tab, setTab] = useState<Tab>('plan')
   return (
-    <main>
-      {tab === 'settings' && <SettingsScreen settings={app.settings} onChange={app.setSettings} />}
-      {tab === 'plan' && (
-        <PlanScreen settings={app.settings} recipes={app.recipes} plan={app.plan} onPlan={app.setPlan} />
-      )}
+    <main className="mx-auto min-h-screen max-w-md bg-white pb-40">
+      {tab === 'plan' && <PlanScreen settings={app.settings} recipes={app.recipes} plan={app.plan} onPlan={app.setPlan} />}
       {tab === 'shopping' && (
-        <ShoppingScreen plan={app.plan} recipes={app.recipes} pantry={app.pantry} onTogglePantry={app.togglePantry}
+        <ShoppingScreen
+          plan={app.plan}
+          recipes={app.recipes}
+          pantry={app.pantry}
+          onTogglePantry={app.togglePantry}
           bought={app.bought}
           onToggleBought={app.toggleBought}
         />
       )}
-      <nav className="tabs">
-        {tabs.map((t) => (
-          <button key={t.key} aria-current={tab === t.key ? 'page' : undefined} onClick={() => setTab(t.key)}>
+      {tab === 'settings' && <SettingsScreen settings={app.settings} onChange={app.setSettings} />}
+      <nav className="fixed inset-x-0 bottom-0 z-20 mx-auto flex h-[58px] max-w-md border-t border-line bg-white">
+        {TABS.map((t) => (
+          <button
+            key={t.key}
+            aria-current={tab === t.key ? 'page' : undefined}
+            onClick={() => setTab(t.key)}
+            className={`flex-1 text-[11px] ${tab === t.key ? 'font-bold text-ink' : 'text-faint'}`}
+          >
             {t.label}
           </button>
         ))}

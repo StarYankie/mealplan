@@ -34,38 +34,42 @@ function Harness({ settings = defaultSettings(), onPlan }: { settings?: WeekSett
   )
 }
 const rows = () => screen.getAllByTestId('meal-row')
+const makeBtn = () => screen.getByRole('button', { name: /^식단 (다시 )?만들기$/ })
 const nameOf = (row: HTMLElement) => within(row).getByTestId('meal-name').textContent
 
 describe('PlanScreen', () => {
   it('generates and reports a plan when pressing 식단 만들기', async () => {
     const seen: (Plan | null)[] = []
     render(<Harness onPlan={(p) => seen.push(p)} />)
-    expect(screen.getByText(/아직 식단이 없어요/)).toBeInTheDocument()
-    await userEvent.click(screen.getByRole('button', { name: '식단 만들기' }))
+    expect(screen.getByRole('heading', { name: '식단을 만들어 볼까요?' })).toBeInTheDocument()
+    await userEvent.click(makeBtn())
     expect(rows()).toHaveLength(14)
     expect(seen.at(-1)!.meals).toHaveLength(14)
   })
 
   it('supports a four-week plan shown by week', async () => {
     render(<Harness />)
-    await userEvent.selectOptions(screen.getByLabelText('기간'), '4')
-    await userEvent.click(screen.getByRole('button', { name: '식단 만들기' }))
+    await userEvent.click(screen.getByRole('button', { name: '4주' }))
+    await userEvent.click(makeBtn())
     expect(rows()).toHaveLength(56)
     expect(screen.getByText('4주차')).toBeInTheDocument()
+    expect(makeBtn()).toHaveTextContent('식단 다시 만들기')
   })
 
   it('keeps a locked meal when regenerating', async () => {
     render(<Harness />)
-    await userEvent.click(screen.getByRole('button', { name: '식단 만들기' }))
+    await userEvent.click(makeBtn())
     const before = nameOf(rows()[0])
-    await userEvent.click(within(rows()[0]).getByRole('button', { name: '고정' }))
-    await userEvent.click(screen.getByRole('button', { name: '식단 만들기' }))
+    await userEvent.click(within(rows()[0]).getByTestId('meal-name'))
+    await userEvent.click(within(screen.getByRole('dialog')).getByRole('button', { name: '고정' }))
+    await userEvent.click(within(screen.getByRole('dialog')).getByRole('button', { name: '닫기' }))
+    await userEvent.click(makeBtn())
     expect(nameOf(rows()[0])).toBe(before)
   })
 
   it('rerolls only the chosen meal', async () => {
     render(<Harness />)
-    await userEvent.click(screen.getByRole('button', { name: '식단 만들기' }))
+    await userEvent.click(makeBtn())
     const before = rows().map(nameOf)
     await userEvent.click(within(rows()[1]).getByRole('button', { name: '다시 뽑기' }))
     const after = rows().map(nameOf)
@@ -75,10 +79,11 @@ describe('PlanScreen', () => {
 
   it('shows the recipe with ingredients scaled by people when a menu is clicked', async () => {
     render(<Harness />)
-    await userEvent.click(screen.getByRole('button', { name: '식단 만들기' }))
+    await userEvent.click(makeBtn())
     await userEvent.click(within(rows()[0]).getByTestId('meal-name'))
-    expect(screen.getByText('계란 4개')).toBeInTheDocument() // 1인분 2개 × 2명
-    expect(screen.getByText(/조리 순서 하나/)).toBeInTheDocument()
+    const sheet = screen.getByRole('dialog')
+    expect(within(sheet).getByText('계란 4개')).toBeInTheDocument() // 1인분 2개 × 2명
+    expect(within(sheet).getByText(/조리 순서 하나/)).toBeInTheDocument()
   })
 
   it('explains an empty plan when everyone is zero', async () => {
@@ -88,7 +93,7 @@ describe('PlanScreen', () => {
       d.dinner.people = 0
     }
     render(<Harness settings={s} />)
-    await userEvent.click(screen.getByRole('button', { name: '식단 만들기' }))
+    await userEvent.click(makeBtn())
     expect(screen.getByText(/만들 끼니가 없어요/)).toBeInTheDocument()
   })
 
@@ -96,13 +101,13 @@ describe('PlanScreen', () => {
     const seen: (Plan | null)[] = []
     render(<Harness onPlan={(p) => seen.push(p)} />)
     fireEvent.change(screen.getByLabelText('시작일'), { target: { value: '2026-12-31' } })
-    await userEvent.click(screen.getByRole('button', { name: '식단 만들기' }))
+    await userEvent.click(makeBtn())
     expect(seen.at(-1)!.startDate).toBe('2026-12-31')
   })
 
   it('tells the user when settings changed after the plan was made', async () => {
     const { rerender } = render(<Harness />)
-    await userEvent.click(screen.getByRole('button', { name: '식단 만들기' }))
+    await userEvent.click(makeBtn())
     expect(screen.queryByText(/설정이 바뀌었어요/)).not.toBeInTheDocument()
     const changed = defaultSettings()
     changed[0].dinner.people = 5

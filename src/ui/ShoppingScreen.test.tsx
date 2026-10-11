@@ -95,6 +95,13 @@ describe('ShoppingScreen', () => {
     expect(box).toBeChecked()
   })
 
+  it('shows how many items have been bought', async () => {
+    render(<Harness />)
+    expect(screen.getByText(/2개 중 0개 샀어요/)).toBeInTheDocument()
+    await userEvent.click(screen.getByRole('checkbox', { name: '양파 2개' }))
+    expect(screen.getByText(/2개 중 1개 샀어요/)).toBeInTheDocument()
+  })
+
   it('keeps checkmarks when the screen is left and reopened', async () => {
     render(<Harness />)
     await userEvent.click(screen.getByRole('checkbox', { name: '양파 2개' }))

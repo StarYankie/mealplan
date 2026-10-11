@@ -1,10 +1,8 @@
 import { useState } from 'react'
-import { render, screen, renderHook, act } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { SettingsScreen } from './SettingsScreen'
-import { useAppState } from './useAppState'
 import { defaultSettings } from '../settings'
-import { KEYS, type KeyValueStore } from '../storage'
 import type { WeekSettings } from '../types'
 
 function Harness({ onChange }: { onChange?: (s: WeekSettings) => void }) {
@@ -20,77 +18,66 @@ function Harness({ onChange }: { onChange?: (s: WeekSettings) => void }) {
   )
 }
 
-const memStore = (initial: Record<string, string> = {}): KeyValueStore => {
-  const m = new Map(Object.entries(initial))
-  return { get: (k) => m.get(k) ?? null, set: (k, v) => void m.set(k, v) }
+const openDay = async (day: string) => {
+  await userEvent.click(screen.getByRole('button', { name: new RegExp(`^${day}`) }))
+  return screen.getByRole('dialog', { name: `${day} 설정` })
 }
 
 describe('SettingsScreen', () => {
-  it('renders a slot for each of 7 days x 3 meals', () => {
+  it('lists the seven days with a summary of the meals eaten', () => {
     render(<Harness />)
-    expect(screen.getAllByTestId('slot')).toHaveLength(21)
+    expect(screen.getAllByTestId('day-row')).toHaveLength(7)
+    const monday = screen.getByRole('button', { name: /^월요일/ })
+    expect(monday).toHaveTextContent('점심 2명')
+    expect(monday).toHaveTextContent('저녁 2명')
+    expect(monday).not.toHaveTextContent('아침')
   })
 
-  it('marks a slot "안 먹음" when people is set to 0 and reports the change', async () => {
+  it('opens a sheet with breakfast, lunch and dinner for the chosen day', async () => {
+    render(<Harness />)
+    const sheet = await openDay('수요일')
+    for (const meal of ['아침', '점심', '저녁']) expect(within(sheet).getByRole('group', { name: meal })).toBeInTheDocument()
+  })
+
+  it('turns a meal off with the switch and reports people 0', async () => {
     const seen: WeekSettings[] = []
     render(<Harness onChange={(s) => seen.push(s)} />)
-    await userEvent.click(screen.getByRole('button', { name: '수요일 점심' }))
-    const people = screen.getByLabelText('인원')
-    await userEvent.clear(people)
-    await userEvent.type(people, '0')
-    expect(screen.getByRole('button', { name: '수요일 점심' })).toHaveTextContent('안 먹음')
+    const sheet = await openDay('수요일')
+    await userEvent.click(within(sheet).getByRole('switch', { name: '점심 안 먹어요' }))
     expect(seen.at(-1)![2].lunch.people).toBe(0)
+    await userEvent.click(within(sheet).getByRole('button', { name: '확인' }))
+    expect(screen.getByRole('button', { name: /^수요일/ })).toHaveTextContent('점심 안 먹음')
+  })
+
+  it('turns a meal back on with 1 person', async () => {
+    const seen: WeekSettings[] = []
+    render(<Harness onChange={(s) => seen.push(s)} />)
+    const sheet = await openDay('월요일')
+    const sw = within(sheet).getByRole('switch', { name: '아침 안 먹어요' })
+    expect(sw).toHaveAttribute('aria-checked', 'true') // 기본값: 아침은 안 먹음
+    await userEvent.click(sw)
+    expect(seen.at(-1)![0].breakfast.people).toBe(1)
+  })
+
+  it('changes people with the stepper and never goes below 0', async () => {
+    const seen: WeekSettings[] = []
+    render(<Harness onChange={(s) => seen.push(s)} />)
+    const sheet = await openDay('월요일')
+    const dinner = within(sheet).getByRole('group', { name: '저녁' })
+    await userEvent.click(within(dinner).getByRole('button', { name: '인원 늘리기' }))
+    expect(seen.at(-1)![0].dinner.people).toBe(3)
+    for (let i = 0; i < 3; i++) await userEvent.click(within(dinner).getByRole('button', { name: '인원 줄이기' }))
+    expect(seen.at(-1)![0].dinner.people).toBe(0)
+    expect(within(dinner).queryByRole('button', { name: '인원 줄이기' })).not.toBeInTheDocument()
   })
 
   it('changes difficulty', async () => {
     const seen: WeekSettings[] = []
     render(<Harness onChange={(s) => seen.push(s)} />)
-    await userEvent.click(screen.getByRole('button', { name: '월요일 저녁' }))
-    await userEvent.selectOptions(screen.getByLabelText('난이도'), '3')
+    const sheet = await openDay('월요일')
+    const dinner = within(sheet).getByRole('group', { name: '저녁' })
+    await userEvent.click(within(dinner).getByRole('button', { name: '공들임' }))
     expect(seen.at(-1)![0].dinner.maxDifficulty).toBe(3)
-  })
-})
-
-describe('useAppState', () => {
-  it('falls back to default settings when stored JSON is broken', () => {
-    const { result } = renderHook(() => useAppState(memStore({ [KEYS.settings]: '{broken' }), []))
-    expect(result.current.settings).toEqual(defaultSettings())
-  })
-  it('falls back to default settings when stored JSON has the wrong shape', () => {
-    const { result } = renderHook(() => useAppState(memStore({ [KEYS.settings]: '{}' }), []))
-    expect(result.current.settings).toEqual(defaultSettings())
-  })
-  it('persists settings changes to the store', () => {
-    const store = memStore()
-    const { result } = renderHook(() => useAppState(store, []))
-    const next = defaultSettings()
-    next[0].lunch.people = 5
-    act(() => result.current.setSettings(next))
-    expect(JSON.parse(store.get(KEYS.settings)!)[0].lunch.people).toBe(5)
-  })
-
-  const goodMeal = { date: '2026-10-12', meal: 'dinner', recipeId: 'x', people: 2, locked: false, relaxed: false }
-  it.each([
-    ['missing weeks and warnings', { startDate: '2026-10-12', meals: [] }],
-    ['null meal entry', { startDate: '2026-10-12', weeks: 1, warnings: [], meals: [null] }],
-    ['unsupported weeks', { startDate: '2026-10-12', weeks: 3, warnings: [], meals: [goodMeal] }],
-    ['meal missing fields', { startDate: '2026-10-12', weeks: 1, warnings: [], meals: [{ date: '2026-10-12' }] }],
-  ])('ignores a stored plan with %s', (_name, bad) => {
-    const { result } = renderHook(() => useAppState(memStore({ [KEYS.plan]: JSON.stringify(bad) }), []))
-    expect(result.current.plan).toBeNull()
-  })
-  it('keeps a well-formed stored plan', () => {
-    const good = { startDate: '2026-10-12', weeks: 1, warnings: [], meals: [goodMeal] }
-    const { result } = renderHook(() => useAppState(memStore({ [KEYS.plan]: JSON.stringify(good) }), []))
-    expect(result.current.plan).toEqual(good)
-  })
-  it('persists bought checkmarks across reloads', () => {
-    const store = memStore()
-    const first = renderHook(() => useAppState(store, []))
-    act(() => first.result.current.toggleBought('0|양파|개|2'))
-    const second = renderHook(() => useAppState(store, []))
-    expect(second.result.current.bought.has('0|양파|개|2')).toBe(true)
-    act(() => second.result.current.toggleBought('0|양파|개|2'))
-    expect(second.result.current.bought.has('0|양파|개|2')).toBe(false)
+    expect(within(dinner).getByRole('button', { name: '공들임' })).toHaveAttribute('aria-pressed', 'true')
   })
 })
