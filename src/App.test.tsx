@@ -70,3 +70,19 @@ describe('App page titles', () => {
     expect(titleOf().icon).toHaveAttribute('aria-hidden', 'true')
   })
 })
+
+describe('App title layout is identical on every tab', () => {
+  beforeEach(() => localStorage.clear())
+
+  it('uses the same classes for the title row, icon badge and title text', async () => {
+    render(<App />)
+    const sigs: string[] = []
+    for (const tab of [null, '장보기', '설정']) {
+      if (tab) await userEvent.click(screen.getByRole('button', { name: tab }))
+      const h1 = screen.getByRole('heading', { level: 1 })
+      const icon = h1.parentElement!.querySelector('[data-icon]') as HTMLElement
+      sigs.push([h1.parentElement!.className, icon.className, h1.className, icon.querySelector('svg')!.getAttribute('width')].join('|'))
+    }
+    expect(new Set(sigs).size).toBe(1)
+  })
+})
