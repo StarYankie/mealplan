@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { fmtAmount } from '../format'
 import { buildShoppingList, weekCount } from '../shopping'
 import type { Plan, Recipe } from '../types'
@@ -12,8 +12,25 @@ interface Props {
   onToggleBought: (key: string) => void
 }
 
+const UNDO_MS = 5000
+
+// 받침이 있으면 '을', 없으면 '를' (한글이 아니면 '을/를')
+function objectParticle(word: string): string {
+  const code = word.charCodeAt(word.length - 1) - 0xac00
+  if (code < 0 || code > 11171) return '을/를'
+  return code % 28 === 0 ? '를' : '을'
+}
+
 export function ShoppingScreen({ plan, recipes, pantry, onTogglePantry, bought, onToggleBought }: Props) {
   const [week, setWeek] = useState(0)
+  const [undo, setUndo] = useState<string | null>(null)
+  const [showPantry, setShowPantry] = useState(false)
+
+  useEffect(() => {
+    if (undo === null) return
+    const t = setTimeout(() => setUndo(null), UNDO_MS)
+    return () => clearTimeout(t)
+  }, [undo])
 
   if (!plan) {
     return (
@@ -38,6 +55,36 @@ export function ShoppingScreen({ plan, recipes, pantry, onTogglePantry, bought, 
         {weeks > 1 ? `${current + 1}주차 · ` : ''}
         {items.length}개 중 {boughtCount}개 샀어요
       </p>
+
+      {pantry.size > 0 && (
+        <div className="px-5 pb-2">
+          <button
+            aria-expanded={showPantry}
+            onClick={() => setShowPantry((v) => !v)}
+            className="flex w-full items-center justify-between rounded-xl bg-line px-4 py-3 text-left text-[13px] font-semibold text-sub"
+          >
+            안 사도 되는 재료 {pantry.size}개
+            <span aria-hidden>{showPantry ? '⌃' : '⌄'}</span>
+          </button>
+          {showPantry && (
+            <div className="pt-3">
+              <p className="pb-2 text-xs text-mute">집에 있어서 목록에서 뺐어요. 모든 주에서 빠져요.</p>
+              <div className="flex flex-wrap gap-1.5">
+                {[...pantry].map((name) => (
+                  <button
+                    key={name}
+                    aria-label={`${name} 다시 사기`}
+                    onClick={() => onTogglePantry(name)}
+                    className="rounded-full bg-line px-3 py-1.5 text-[13px] font-semibold text-sub"
+                  >
+                    {name} 다시 사기
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
 
       {weeks > 1 && (
         <div className="flex gap-1.5 px-5 pb-2">
@@ -79,7 +126,10 @@ export function ShoppingScreen({ plan, recipes, pantry, onTogglePantry, bought, 
                   </label>
                   <button
                     aria-label={`${i.name} 안 사도 돼요`}
-                    onClick={() => onTogglePantry(i.name)}
+                    onClick={() => {
+                      onTogglePantry(i.name)
+                      setUndo(i.name)
+                    }}
                     className="flex-none rounded-lg px-2 py-1.5 text-xs font-semibold text-mute"
                   >
                     안 사도 돼요
@@ -90,22 +140,24 @@ export function ShoppingScreen({ plan, recipes, pantry, onTogglePantry, bought, 
         </div>
       ))}
 
-      {pantry.size > 0 && (
-        <div className="pb-4">
-          <div className="px-5 pt-6 text-xs font-semibold text-mute">안 사도 되는 재료</div>
-          <p className="px-5 pb-2 text-xs text-mute">집에 있어서 목록에서 뺐어요. 모든 주에서 빠져요.</p>
-          <div className="flex flex-wrap gap-1.5 px-5">
-            {[...pantry].map((name) => (
-              <button
-                key={name}
-                aria-label={`${name} 다시 사기`}
-                onClick={() => onTogglePantry(name)}
-                className="rounded-full bg-line px-3 py-1.5 text-[13px] font-semibold text-sub"
-              >
-                {name} 다시 사기
-              </button>
-            ))}
-          </div>
+      {undo !== null && (
+        <div
+          role="status"
+          className="fixed inset-x-4 bottom-[70px] z-30 mx-auto flex max-w-md items-center justify-between rounded-2xl bg-ink px-4 py-3 text-[13px] text-surface shadow-lg"
+        >
+          <span>
+            {undo}
+            {objectParticle(undo)} 목록에서 뺐어요
+          </span>
+          <button
+            className="font-bold text-toss"
+            onClick={() => {
+              onTogglePantry(undo)
+              setUndo(null)
+            }}
+          >
+            되돌리기
+          </button>
         </div>
       )}
     </section>

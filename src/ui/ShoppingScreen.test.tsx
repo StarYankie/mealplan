@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { render, renderHook, screen, act } from '@testing-library/react'
+import { render, renderHook, screen, act, fireEvent } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { ShoppingScreen } from './ShoppingScreen'
 import { useAppState } from './useAppState'
@@ -79,14 +79,44 @@ describe('ShoppingScreen', () => {
     expect(screen.queryByText('양파 2개')).not.toBeInTheDocument()
   })
 
-  it('removes an item marked as at home and lets it be added back', async () => {
+  it('removes an item with 안 사도 돼요 and offers to undo it right away', async () => {
     render(<Harness />)
     await userEvent.click(screen.getByRole('button', { name: '양파 안 사도 돼요' }))
     expect(screen.queryByText('양파 2개')).not.toBeInTheDocument()
-    expect(screen.getByText('안 사도 되는 재료')).toBeInTheDocument()
-    await userEvent.click(screen.getByRole('button', { name: '양파 다시 사기' }))
-    expect(screen.queryByText('안 사도 되는 재료')).not.toBeInTheDocument()
+    expect(screen.getByRole('status')).toHaveTextContent('양파를 목록에서 뺐어요')
+    expect(screen.getByRole('button', { name: /안 사도 되는 재료 1개/ })).toBeInTheDocument()
+    await userEvent.click(screen.getByRole('button', { name: '되돌리기' }))
     expect(screen.getByText('양파 2개')).toBeInTheDocument()
+    expect(screen.queryByRole('status')).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: /안 사도 되는 재료/ })).not.toBeInTheDocument()
+  })
+
+  it('lists the removed items in a summary row at the top and lets them be bought again', async () => {
+    render(<Harness />)
+    expect(screen.queryByRole('button', { name: /안 사도 되는 재료/ })).not.toBeInTheDocument()
+    await userEvent.click(screen.getByRole('button', { name: '양파 안 사도 돼요' }))
+    const summary = screen.getByRole('button', { name: /안 사도 되는 재료 1개/ })
+    const firstItem = screen.getByRole('checkbox')
+    expect(summary.compareDocumentPosition(firstItem) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+    expect(screen.queryByRole('button', { name: '양파 다시 사기' })).not.toBeInTheDocument()
+    await userEvent.click(summary)
+    await userEvent.click(screen.getByRole('button', { name: '양파 다시 사기' }))
+    expect(screen.getByText('양파 2개')).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: /안 사도 되는 재료/ })).not.toBeInTheDocument()
+  })
+
+  it('hides the undo message after a few seconds', () => {
+    vi.useFakeTimers()
+    try {
+      render(<Harness />)
+      fireEvent.click(screen.getByRole('button', { name: '양파 안 사도 돼요' }))
+      expect(screen.getByRole('status')).toBeInTheDocument()
+      act(() => void vi.advanceTimersByTime(5000))
+      expect(screen.queryByRole('status')).not.toBeInTheDocument()
+      expect(screen.getByRole('button', { name: /안 사도 되는 재료 1개/ })).toBeInTheDocument()
+    } finally {
+      vi.useRealTimers()
+    }
   })
 
   it('lets items be checked off as bought', async () => {
