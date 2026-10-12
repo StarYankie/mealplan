@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { render, screen, within, fireEvent } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { PlanScreen } from './PlanScreen'
+import { generatePlan } from '../planner'
 import { defaultSettings } from '../settings'
 import type { Difficulty, Meal, Plan, Recipe, WeekSettings } from '../types'
 
@@ -19,8 +20,16 @@ const recipes = [
   ...Array.from({ length: 10 }, (_, i) => mk(`D${i}`, 'dinner', 2)),
 ]
 
-function Harness({ settings = defaultSettings(), onPlan }: { settings?: WeekSettings; onPlan?: (p: Plan | null) => void }) {
-  const [plan, setPlan] = useState<Plan | null>(null)
+function Harness({
+  settings = defaultSettings(),
+  initialPlan = null,
+  onPlan,
+}: {
+  settings?: WeekSettings
+  initialPlan?: Plan | null
+  onPlan?: (p: Plan | null) => void
+}) {
+  const [plan, setPlan] = useState<Plan | null>(initialPlan)
   return (
     <PlanScreen
       settings={settings}
@@ -47,13 +56,25 @@ describe('PlanScreen', () => {
     expect(seen.at(-1)!.meals).toHaveLength(14)
   })
 
-  it('supports a four-week plan shown by week', async () => {
-    render(<Harness />)
-    await userEvent.click(screen.getByRole('button', { name: '4주' }))
+  it('has no period choice and always makes a one-week plan', async () => {
+    const seen: (Plan | null)[] = []
+    render(<Harness onPlan={(p) => seen.push(p)} />)
+    expect(screen.queryByRole('button', { name: '4주' })).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: '1주' })).not.toBeInTheDocument()
     await userEvent.click(makeBtn())
-    expect(rows()).toHaveLength(56)
-    expect(screen.getByText('4주차')).toBeInTheDocument()
-    expect(makeBtn()).toHaveTextContent('식단 다시 만들기')
+    expect(seen.at(-1)!.weeks).toBe(1)
+    expect(rows()).toHaveLength(14)
+    expect(screen.queryByText('1주차')).not.toBeInTheDocument()
+  })
+
+  it('replaces an old four-week plan with a one-week plan when regenerated', async () => {
+    const old = generatePlan({ settings: defaultSettings(), recipes, startDate: '2026-10-12', weeks: 4 })
+    const seen: (Plan | null)[] = []
+    render(<Harness initialPlan={old} onPlan={(p) => seen.push(p)} />)
+    expect(rows()).toHaveLength(56) // 예전에 만든 4주 식단은 그대로 보인다
+    await userEvent.click(makeBtn())
+    expect(seen.at(-1)!.weeks).toBe(1)
+    expect(rows()).toHaveLength(14)
   })
 
   it('keeps a locked meal when regenerating', async () => {

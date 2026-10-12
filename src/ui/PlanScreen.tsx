@@ -24,13 +24,12 @@ const monthDay = (iso: string) => `${new Date(utc(iso)).getUTCMonth() + 1}월 ${
 
 export function PlanScreen({ settings, recipes, plan, onPlan }: Props) {
   const [startDate, setStartDate] = useState(() => plan?.startDate ?? nextMonday(new Date()))
-  const [weeks, setWeeks] = useState<1 | 4>(plan?.weeks ?? 1)
   const [openIndex, setOpenIndex] = useState<number | null>(null)
   const byId = new Map(recipes.map((r) => [r.id, r]))
 
   const make = () => {
     setOpenIndex(null)
-    onPlan(generatePlan({ settings, recipes, startDate, weeks, keep: plan?.meals.filter((m) => m.locked) }))
+    onPlan(generatePlan({ settings, recipes, startDate, weeks: 1, keep: plan?.meals.filter((m) => m.locked) }))
   }
   const toggleLock = (index: number) =>
     plan && onPlan({ ...plan, meals: plan.meals.map((m, i) => (i === index ? { ...m, locked: !m.locked } : m)) })
@@ -41,7 +40,7 @@ export function PlanScreen({ settings, recipes, plan, onPlan }: Props) {
   const weekOf = (date: string) => Math.floor((utc(date) - utc(plan!.startDate)) / DAY_MS / 7)
 
   const title = !plan ? '식단을 만들어 볼까요?' : plan.weeks === 1 ? '이번 주 식단이에요' : '한 달 식단이에요'
-  const subtitle = plan ? `${monthDay(plan.startDate)}부터 ${plan.weeks * 7}일` : '시작일과 기간을 정해 주세요'
+  const subtitle = plan ? `${monthDay(plan.startDate)}부터 ${plan.weeks * 7}일` : '시작일을 정하고 만들어 보세요'
   const settingsChanged = !!plan?.settings && JSON.stringify(plan.settings) !== JSON.stringify(settings)
 
   const notice = (text: string) => (
@@ -64,19 +63,6 @@ export function PlanScreen({ settings, recipes, plan, onPlan }: Props) {
           className="rounded-lg bg-line px-3 py-1.5 text-sm text-ink"
         />
       </label>
-      <div className="flex gap-1.5 px-5 pb-3">
-        {([1, 4] as const).map((w) => (
-          <button
-            key={w}
-            aria-pressed={weeks === w}
-            onClick={() => setWeeks(w)}
-            className={`rounded-full px-4 py-1.5 text-[13px] font-semibold ${weeks === w ? 'bg-ink text-surface' : 'bg-line text-sub'}`}
-          >
-            {w}주
-          </button>
-        ))}
-      </div>
-
       {settingsChanged && notice('설정이 바뀌었어요. 식단 만들기를 누르면 새 설정이 반영돼요. (고정한 메뉴는 유지돼요)')}
       {plan?.warnings.map(notice)}
       {plan && plan.meals.length === 0 && <p className="px-5 py-6 text-sm text-mute">만들 끼니가 없어요. 설정에서 인원을 확인해 주세요.</p>}
