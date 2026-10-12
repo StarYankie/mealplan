@@ -34,3 +34,39 @@ describe('App dark mode', () => {
     expect(document.documentElement.classList.contains('dark')).toBe(false)
   })
 })
+
+describe('App page titles', () => {
+  beforeEach(() => localStorage.clear())
+
+  const titleOf = () => {
+    const h1 = screen.getByRole('heading', { level: 1 })
+    return { h1, icon: h1.parentElement!.querySelector('[data-icon]') as HTMLElement | null }
+  }
+
+  it('shows a different icon beside the title on each of the three tabs', async () => {
+    render(<App />)
+    const icons = [titleOf().icon?.dataset.icon]
+    await userEvent.click(screen.getByRole('button', { name: '장보기' }))
+    icons.push(titleOf().icon?.dataset.icon)
+    await userEvent.click(screen.getByRole('button', { name: '설정' }))
+    icons.push(titleOf().icon?.dataset.icon)
+    expect(icons.every(Boolean)).toBe(true)
+    expect(new Set(icons).size).toBe(3)
+  })
+
+  it('keeps every title on one line (no line break, short, no wrapping)', async () => {
+    render(<App />)
+    for (const tab of [null, '장보기', '설정']) {
+      if (tab) await userEvent.click(screen.getByRole('button', { name: tab }))
+      const { h1 } = titleOf()
+      expect(h1.querySelector('br')).toBeNull()
+      expect(h1).toHaveClass('whitespace-nowrap')
+      expect(h1.textContent!.length).toBeLessThanOrEqual(11)
+    }
+  })
+
+  it('hides the decorative icon from screen readers', () => {
+    render(<App />)
+    expect(titleOf().icon).toHaveAttribute('aria-hidden', 'true')
+  })
+})

@@ -50,7 +50,7 @@ describe('PlanScreen', () => {
   it('generates and reports a plan when pressing 식단 만들기', async () => {
     const seen: (Plan | null)[] = []
     render(<Harness onPlan={(p) => seen.push(p)} />)
-    expect(screen.getByRole('heading', { name: '식단을 만들어 볼까요?' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: '식단 만들어 볼까요?' })).toBeInTheDocument()
     await userEvent.click(makeBtn())
     expect(rows()).toHaveLength(14)
     expect(seen.at(-1)!.meals).toHaveLength(14)

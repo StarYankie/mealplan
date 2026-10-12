@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { DAY_LONG, DIFFICULTY_LABEL, MEAL_LABEL } from '../format'
 import type { Difficulty, Meal, Slot, ThemePref, WeekSettings } from '../types'
+import { PageTitle } from './PageTitle'
 import { Sheet } from './Sheet'
 
 const MEALS: Meal[] = ['breakfast', 'lunch', 'dinner']
@@ -62,11 +63,7 @@ export function SettingsScreen({ settings, onChange, theme, onThemeChange }: Pro
 
   return (
     <section>
-      <h1 className="px-5 pb-1 pt-10 text-2xl font-bold leading-snug">
-        언제, 몇 명이
-        <br />
-        먹나요?
-      </h1>
+      <PageTitle icon="sliders">몇 명이 먹나요?</PageTitle>
       <p className="px-5 pb-2 text-sm text-sub">평일·주말은 한 번에, 다른 날은 요일을 눌러 따로 바꿔요</p>
 
       <div className="px-5 pb-1 pt-3 text-xs font-semibold text-mute">한 번에 바꾸기</div>

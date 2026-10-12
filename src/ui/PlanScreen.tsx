@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { DAY_LONG, DIFFICULTY_LABEL, MEAL_LABEL } from '../format'
 import { generatePlan, nextMonday, rerollMeal } from '../planner'
 import type { Meal, Plan, PlannedMeal, Recipe, WeekSettings } from '../types'
+import { PageTitle } from './PageTitle'
 import { RecipeView } from './RecipeView'
 import { Sheet } from './Sheet'
 
@@ -39,7 +40,7 @@ export function PlanScreen({ settings, recipes, plan, onPlan }: Props) {
   const openRecipe = open ? byId.get(open.recipeId) : undefined
   const weekOf = (date: string) => Math.floor((utc(date) - utc(plan!.startDate)) / DAY_MS / 7)
 
-  const title = !plan ? '식단을 만들어 볼까요?' : plan.weeks === 1 ? '이번 주 식단이에요' : '한 달 식단이에요'
+  const title = !plan ? '식단 만들어 볼까요?' : plan.weeks === 1 ? '이번 주 식단이에요' : '한 달 식단이에요'
   const subtitle = plan ? `${monthDay(plan.startDate)}부터 ${plan.weeks * 7}일` : '시작일을 정하고 만들어 보세요'
   const settingsChanged = !!plan?.settings && JSON.stringify(plan.settings) !== JSON.stringify(settings)
 
@@ -51,7 +52,7 @@ export function PlanScreen({ settings, recipes, plan, onPlan }: Props) {
 
   return (
     <section>
-      <h1 className="px-5 pb-1 pt-10 text-2xl font-bold leading-snug">{title}</h1>
+      <PageTitle icon="bowl">{title}</PageTitle>
       <p className="px-5 pb-4 text-sm text-sub">{subtitle}</p>
 
       <label className="flex items-center justify-between px-5 py-2.5">
