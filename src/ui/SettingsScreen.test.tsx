@@ -94,3 +94,56 @@ describe('SettingsScreen theme', () => {
     expect(picked).toEqual(['dark'])
   })
 })
+
+describe('SettingsScreen group rows', () => {
+  const openGroup = async (label: RegExp, dialogName: string) => {
+    await userEvent.click(screen.getByRole('button', { name: label }))
+    return screen.getByRole('dialog', { name: dialogName })
+  }
+
+  it('shows 평일 and 주말 rows above the day rows', () => {
+    render(<Harness />)
+    expect(screen.getAllByTestId('group-row')).toHaveLength(2)
+    expect(screen.getByRole('button', { name: /^평일/ })).toHaveTextContent('점심 2명 · 저녁 2명')
+    expect(screen.getByRole('button', { name: /^주말/ })).toHaveTextContent('점심 2명 · 저녁 2명')
+  })
+
+  it('applies a people change to Monday-Friday only', async () => {
+    const seen: WeekSettings[] = []
+    render(<Harness onChange={(s) => seen.push(s)} />)
+    const sheet = await openGroup(/^평일/, '평일(월~금) 설정')
+    const lunch = within(sheet).getByRole('group', { name: '점심' })
+    await userEvent.click(within(lunch).getByRole('button', { name: '인원 줄이기' }))
+    const s = seen.at(-1)!
+    expect(s.slice(0, 5).map((d) => d.lunch.people)).toEqual([1, 1, 1, 1, 1])
+    expect(s.slice(5).map((d) => d.lunch.people)).toEqual([2, 2])
+  })
+
+  it('applies difficulty to the weekend only', async () => {
+    const seen: WeekSettings[] = []
+    render(<Harness onChange={(s) => seen.push(s)} />)
+    const sheet = await openGroup(/^주말/, '주말(토·일) 설정')
+    const dinner = within(sheet).getByRole('group', { name: '저녁' })
+    await userEvent.click(within(dinner).getByRole('button', { name: '공들임' }))
+    const s = seen.at(-1)!
+    expect(s.slice(5).map((d) => d.dinner.maxDifficulty)).toEqual([3, 3])
+    expect(s.slice(0, 5).map((d) => d.dinner.maxDifficulty)).toEqual([2, 2, 2, 2, 2])
+  })
+
+  it('turns a meal off for every weekday with the switch', async () => {
+    const seen: WeekSettings[] = []
+    render(<Harness onChange={(s) => seen.push(s)} />)
+    const sheet = await openGroup(/^평일/, '평일(월~금) 설정')
+    await userEvent.click(within(sheet).getByRole('switch', { name: '점심 안 먹어요' }))
+    expect(seen.at(-1)!.slice(0, 5).map((d) => d.lunch.people)).toEqual([0, 0, 0, 0, 0])
+  })
+
+  it('says the days differ after one weekday is changed, and keeps that exception', async () => {
+    render(<Harness />)
+    const wed = await openDay('수요일')
+    await userEvent.click(within(within(wed).getByRole('group', { name: '점심' })).getByRole('button', { name: '인원 늘리기' }))
+    await userEvent.click(within(wed).getByRole('button', { name: '확인' }))
+    expect(screen.getByRole('button', { name: /^평일/ })).toHaveTextContent('요일마다 달라요')
+    expect(screen.getByRole('button', { name: /^수요일/ })).toHaveTextContent('점심 3명')
+  })
+})

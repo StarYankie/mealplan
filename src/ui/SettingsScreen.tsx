@@ -5,11 +5,27 @@ import { Sheet } from './Sheet'
 
 const MEALS: Meal[] = ['breakfast', 'lunch', 'dinner']
 
+// 한 번에 바꾸는 요일 묶음. 요일별 행은 그대로 두어 예외(예: 수요일 출근)를 따로 고칠 수 있다.
+const GROUPS = [
+  { label: '평일(월~금)', days: [0, 1, 2, 3, 4] },
+  { label: '주말(토·일)', days: [5, 6] },
+]
+
+interface Target {
+  label: string
+  days: number[]
+}
+
 // 아침은 안 먹는 집이 많아서 0명이면 요약에서 뺀다.
 function summary(day: Record<Meal, Slot>): string {
   return MEALS.filter((m) => m !== 'breakfast' || day[m].people > 0)
     .map((m) => `${MEAL_LABEL[m]} ${day[m].people === 0 ? '안 먹음' : `${day[m].people}명`}`)
     .join(' · ')
+}
+
+function groupSummary(settings: WeekSettings, days: number[]): string {
+  const same = days.every((d) => JSON.stringify(settings[d]) === JSON.stringify(settings[days[0]]))
+  return same ? summary(settings[days[0]]) : '요일마다 달라요'
 }
 
 const THEME_LABEL: Record<ThemePref, string> = { system: '시스템 설정', light: '라이트', dark: '다크' }
@@ -21,11 +37,28 @@ interface Props {
   onThemeChange: (t: ThemePref) => void
 }
 
-export function SettingsScreen({ settings, onChange, theme, onThemeChange }: Props) {
-  const [open, setOpen] = useState<number | null>(null)
+function Row({ title, sub, testId, onClick }: { title: string; sub: string; testId: string; onClick: () => void }) {
+  return (
+    <li data-testid={testId}>
+      <button className="flex w-full items-center px-5 py-3.5 text-left active:bg-line" onClick={onClick}>
+        <span className="min-w-0 flex-1">
+          <span className="block text-[15px] font-semibold">{title}</span>
+          <span className="block text-xs text-mute">{sub}</span>
+        </span>
+        <span aria-hidden className="text-lg text-faint">
+          ›
+        </span>
+      </button>
+    </li>
+  )
+}
 
-  const update = (day: number, meal: Meal, patch: Partial<Slot>) =>
-    onChange(settings.map((d, i) => (i === day ? { ...d, [meal]: { ...d[meal], ...patch } } : d)))
+export function SettingsScreen({ settings, onChange, theme, onThemeChange }: Props) {
+  const [open, setOpen] = useState<Target | null>(null)
+
+  // 시트에서 바꾼 항목은 대상 요일 전체에 적용된다. 시트에는 대상의 첫 요일 값이 보인다.
+  const update = (days: number[], meal: Meal, patch: Partial<Slot>) =>
+    onChange(settings.map((d, i) => (days.includes(i) ? { ...d, [meal]: { ...d[meal], ...patch } } : d)))
 
   return (
     <section>
@@ -34,21 +67,25 @@ export function SettingsScreen({ settings, onChange, theme, onThemeChange }: Pro
         <br />
         먹나요?
       </h1>
-      <p className="px-5 pb-4 text-sm text-sub">요일을 눌러 끼니별로 바꿔요</p>
+      <p className="px-5 pb-2 text-sm text-sub">평일·주말은 한 번에, 다른 날은 요일을 눌러 따로 바꿔요</p>
 
+      <div className="px-5 pb-1 pt-3 text-xs font-semibold text-mute">한 번에 바꾸기</div>
+      <ul>
+        {GROUPS.map((g) => (
+          <Row
+            key={g.label}
+            testId="group-row"
+            title={g.label}
+            sub={groupSummary(settings, g.days)}
+            onClick={() => setOpen({ label: g.label, days: g.days })}
+          />
+        ))}
+      </ul>
+
+      <div className="px-5 pb-1 pt-5 text-xs font-semibold text-mute">요일별로 바꾸기</div>
       <ul>
         {DAY_LONG.map((name, day) => (
-          <li key={name} data-testid="day-row">
-            <button className="flex w-full items-center px-5 py-3.5 text-left active:bg-line" onClick={() => setOpen(day)}>
-              <span className="min-w-0 flex-1">
-                <span className="block text-[15px] font-semibold">{name}</span>
-                <span className="block text-xs text-mute">{summary(settings[day])}</span>
-              </span>
-              <span aria-hidden className="text-lg text-faint">
-                ›
-              </span>
-            </button>
-          </li>
+          <Row key={name} testId="day-row" title={name} sub={summary(settings[day])} onClick={() => setOpen({ label: name, days: [day] })} />
         ))}
       </ul>
 
@@ -68,11 +105,11 @@ export function SettingsScreen({ settings, onChange, theme, onThemeChange }: Pro
         </div>
       </div>
 
-      {open !== null && (
-        <Sheet label={`${DAY_LONG[open]} 설정`} onClose={() => setOpen(null)}>
-          <h2 className="mb-4 text-lg font-bold">{DAY_LONG[open]}</h2>
+      {open && (
+        <Sheet label={`${open.label} 설정`} onClose={() => setOpen(null)}>
+          <h2 className="mb-4 text-lg font-bold">{open.label}</h2>
           {MEALS.map((meal) => {
-            const slot = settings[open][meal]
+            const slot = settings[open.days[0]][meal]
             const off = slot.people === 0
             return (
               <div key={meal} role="group" aria-label={MEAL_LABEL[meal]} className="border-b border-line py-4 last:border-b-0">
@@ -82,7 +119,7 @@ export function SettingsScreen({ settings, onChange, theme, onThemeChange }: Pro
                     role="switch"
                     aria-checked={off}
                     aria-label={`${MEAL_LABEL[meal]} 안 먹어요`}
-                    onClick={() => update(open, meal, { people: off ? 1 : 0 })}
+                    onClick={() => update(open.days, meal, { people: off ? 1 : 0 })}
                     className="flex items-center gap-2 text-xs text-sub"
                   >
                     안 먹어요
@@ -102,7 +139,7 @@ export function SettingsScreen({ settings, onChange, theme, onThemeChange }: Pro
                         <button
                           aria-label="인원 줄이기"
                           className="h-8 w-8 rounded-full bg-line text-lg leading-none text-sub"
-                          onClick={() => update(open, meal, { people: slot.people - 1 })}
+                          onClick={() => update(open.days, meal, { people: slot.people - 1 })}
                         >
                           −
                         </button>
@@ -110,7 +147,7 @@ export function SettingsScreen({ settings, onChange, theme, onThemeChange }: Pro
                         <button
                           aria-label="인원 늘리기"
                           className="h-8 w-8 rounded-full bg-line text-lg leading-none text-sub"
-                          onClick={() => update(open, meal, { people: slot.people + 1 })}
+                          onClick={() => update(open.days, meal, { people: slot.people + 1 })}
                         >
                           +
                         </button>
@@ -122,7 +159,7 @@ export function SettingsScreen({ settings, onChange, theme, onThemeChange }: Pro
                         <button
                           key={d}
                           aria-pressed={slot.maxDifficulty === d}
-                          onClick={() => update(open, meal, { maxDifficulty: d })}
+                          onClick={() => update(open.days, meal, { maxDifficulty: d })}
                           className={`flex-1 rounded-[10px] py-2 text-[13px] font-semibold ${
                             slot.maxDifficulty === d ? 'bg-surface text-ink shadow-sm' : 'text-mute'
                           }`}
