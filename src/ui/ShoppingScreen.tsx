@@ -36,7 +36,7 @@ export function ShoppingScreen({ plan, recipes, pantry, onTogglePantry, bought, 
   if (!plan) {
     return (
       <section>
-        <PageTitle icon="basket">장볼 재료예요</PageTitle>
+        <PageTitle icon="checklist">장볼 재료예요</PageTitle>
         <p className="px-5 text-sm text-sub">먼저 식단을 만드세요. 식단 탭에서 만들 수 있어요.</p>
       </section>
     )
@@ -51,7 +51,7 @@ export function ShoppingScreen({ plan, recipes, pantry, onTogglePantry, bought, 
 
   return (
     <section>
-      <PageTitle icon="basket">장볼 재료예요</PageTitle>
+      <PageTitle icon="checklist">장볼 재료예요</PageTitle>
       <p className="px-5 pb-3 text-sm text-sub">
         {weeks > 1 ? `${current + 1}주차 · ` : ''}
         {items.length}개 중 {boughtCount}개 샀어요

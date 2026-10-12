@@ -63,7 +63,7 @@ export function SettingsScreen({ settings, onChange, theme, onThemeChange }: Pro
 
   return (
     <section>
-      <PageTitle icon="sliders">몇 명이 먹나요?</PageTitle>
+      <PageTitle icon="gear">몇 명이 먹나요?</PageTitle>
       <p className="px-5 pb-2 text-sm text-sub">평일·주말은 한 번에, 다른 날은 요일을 눌러 따로 바꿔요</p>
 
       <div className="px-5 pb-1 pt-3 text-xs font-semibold text-mute">한 번에 바꾸기</div>

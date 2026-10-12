@@ -51,7 +51,7 @@ describe('App page titles', () => {
     await userEvent.click(screen.getByRole('button', { name: '설정' }))
     icons.push(titleOf().icon?.dataset.icon)
     expect(icons.every(Boolean)).toBe(true)
-    expect(new Set(icons).size).toBe(3)
+    expect(icons).toEqual(['calendar', 'checklist', 'gear']) // 식단, 장보기, 설정
   })
 
   it('keeps every title on one line (no line break, short, no wrapping)', async () => {
