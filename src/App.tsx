@@ -37,7 +37,7 @@ export default function App() {
             key={t.key}
             aria-current={tab === t.key ? 'page' : undefined}
             onClick={() => setTab(t.key)}
-            className={`flex-1 text-[11px] ${tab === t.key ? 'font-bold text-ink' : 'text-faint'}`}
+            className={`flex-1 text-xs ${tab === t.key ? 'font-bold text-ink' : 'text-faint'}`}
           >
             {t.label}
           </button>

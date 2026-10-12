@@ -90,7 +90,7 @@ export function PlanScreen({ settings, recipes, plan, onPlan }: Props) {
             key={c.label}
             aria-pressed={c.on}
             onClick={c.onClick}
-            className={`rounded-full px-4 py-1.5 text-[13px] font-semibold ${c.on ? 'bg-ink text-surface' : 'bg-line text-sub'}`}
+            className={`rounded-full px-3 py-1.5 text-xs font-semibold ${c.on ? 'bg-ink text-surface' : 'bg-line text-sub'}`}
           >
             {c.label}
           </button>

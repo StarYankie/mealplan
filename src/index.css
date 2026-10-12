@@ -46,7 +46,9 @@ body {
   background: var(--c-surface);
   color: var(--c-ink);
 }
-button {
-  font: inherit;
-  cursor: pointer;
+/* 레이어 밖에 쓰면 Tailwind 유틸리티(text-xs 등)를 덮어쓴다. 글꼴 상속은 Tailwind 기본(preflight)이 이미 해 준다. */
+@layer base {
+  button {
+    cursor: pointer;
+  }
 }
