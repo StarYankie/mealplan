@@ -52,10 +52,11 @@ export function PlanScreen({ settings, recipes, plan, onPlan }: Props) {
 
   return (
     <section>
-      <PageTitle icon="calendar">{title}</PageTitle>
-      <p className="px-5 pb-4 text-sm text-sub">{subtitle}</p>
+      <PageTitle icon="calendar" subtitle={subtitle}>
+        {title}
+      </PageTitle>
 
-      <label className="flex items-center justify-between px-5 py-2.5">
+      <label className="flex items-center justify-between px-5 pb-3">
         <span className="text-sm text-sub">시작일</span>
         <input
           type="date"

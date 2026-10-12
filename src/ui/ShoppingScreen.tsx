@@ -36,8 +36,9 @@ export function ShoppingScreen({ plan, recipes, pantry, onTogglePantry, bought, 
   if (!plan) {
     return (
       <section>
-        <PageTitle icon="checklist">장볼 재료예요</PageTitle>
-        <p className="px-5 text-sm text-sub">먼저 식단을 만드세요. 식단 탭에서 만들 수 있어요.</p>
+        <PageTitle icon="checklist" subtitle="먼저 식단을 만드세요. 식단 탭에서 만들 수 있어요.">
+          장볼 재료예요
+        </PageTitle>
       </section>
     )
   }
@@ -48,14 +49,15 @@ export function ShoppingScreen({ plan, recipes, pantry, onTogglePantry, bought, 
   const keyOf = (i: (typeof items)[number]) => `${current}|${i.name}|${i.unit}|${i.amount}`
   const boughtCount = items.filter((i) => bought.has(keyOf(i))).length
   const categories = [...new Set(items.map((i) => i.category))]
+  // 본문 첫 요소에는 위쪽 여백을 주지 않는다 (제목 영역과의 간격은 PageTitle 이 정한다)
+  const hasLead = pantry.size > 0 || weeks > 1
+  const leadPad = (index: number) => (hasLead || index > 0 ? 'pt-4' : '')
 
   return (
     <section>
-      <PageTitle icon="checklist">장볼 재료예요</PageTitle>
-      <p className="px-5 pb-3 text-sm text-sub">
-        {weeks > 1 ? `${current + 1}주차 · ` : ''}
-        {items.length}개 중 {boughtCount}개 샀어요
-      </p>
+      <PageTitle icon="checklist" subtitle={`${weeks > 1 ? `${current + 1}주차 · ` : ''}${items.length}개 중 ${boughtCount}개 샀어요`}>
+        장볼 재료예요
+      </PageTitle>
 
       {pantry.size > 0 && (
         <div className="px-5 pb-2">
@@ -102,10 +104,10 @@ export function ShoppingScreen({ plan, recipes, pantry, onTogglePantry, bought, 
         </div>
       )}
 
-      {items.length === 0 && <p className="px-5 py-6 text-sm text-mute">이 주에는 사야 할 재료가 없어요.</p>}
-      {categories.map((cat) => (
+      {items.length === 0 && <p className="px-5 pb-6 text-sm text-mute">이 주에는 사야 할 재료가 없어요.</p>}
+      {categories.map((cat, ci) => (
         <div key={cat}>
-          <div className="px-5 pb-1 pt-4 text-xs font-semibold text-mute">{cat}</div>
+          <div className={`px-5 pb-1 text-xs font-semibold text-mute ${leadPad(ci)}`}>{cat}</div>
           {items
             .filter((i) => i.category === cat)
             .map((i) => {

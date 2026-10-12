@@ -86,3 +86,27 @@ describe('App title layout is identical on every tab', () => {
     expect(new Set(sigs).size).toBe(1)
   })
 })
+
+describe('gap between the title area and the body is identical on every tab', () => {
+  beforeEach(() => localStorage.clear())
+
+  const hasTopSpace = (el: Element | null) => !!el && /(^|\s)(pt|py|mt)-/.test(el.className)
+
+  it('draws the header (title + subtitle) with one shared component and adds no extra top space to the first body element', async () => {
+    render(<App />)
+    const sigs: string[] = []
+    for (const tab of [null, '장보기', '설정']) {
+      if (tab) await userEvent.click(screen.getByRole('button', { name: tab }))
+      const header = screen.getByRole('heading', { level: 1 }).closest('header')!
+      expect(header).not.toBeNull()
+      expect(header.querySelector('p')).not.toBeNull() // 모든 화면에 부제목이 있다
+      sigs.push([header.className, header.querySelector('p')!.className].join('|'))
+      const first = header.nextElementSibling // 식단을 만들기 전의 장보기 화면에는 본문이 없다
+      if (first) {
+        expect(hasTopSpace(first), `first body element of ${tab ?? '식단'}`).toBe(false)
+        expect(hasTopSpace(first.firstElementChild), `first child of ${tab ?? '식단'}`).toBe(false)
+      }
+    }
+    expect(new Set(sigs).size).toBe(1)
+  })
+})

@@ -33,21 +33,25 @@ const GLYPH: Record<IconName, ReactNode> = {
   ),
 }
 
-// 화면 맨 위 제목. 아이콘이 있어도 제목이 두 줄이 되지 않도록 줄바꿈을 막고 글자를 짧게 쓴다.
-// 모든 화면이 이 부품 하나를 쓰므로 글자 크기·간격·아이콘 크기가 항상 같다.
-export function PageTitle({ icon, children }: { icon: IconName; children: string }) {
+// 화면 맨 위 제목 + 부제목. 아이콘이 있어도 제목이 두 줄이 되지 않도록 줄바꿈을 막고 글자를 짧게 쓴다.
+// 모든 화면이 이 부품 하나를 쓰므로 글자 크기, 아이콘 크기, 제목과 본문 사이 간격이 항상 같다.
+// 본문 간격은 여기(header 의 pb-5)에서만 정한다. 본문 첫 요소에는 위쪽 여백(pt/py/mt)을 주지 않는다.
+export function PageTitle({ icon, subtitle, children }: { icon: IconName; subtitle: string; children: string }) {
   return (
-    <div className="flex items-center gap-3 px-5 pb-1 pt-9">
-      <span
-        data-icon={icon}
-        aria-hidden="true"
-        className="flex h-9 w-9 flex-none items-center justify-center rounded-[11px] bg-toss-soft"
-      >
-        <svg width="22" height="22" viewBox="0 0 24 24">
-          {GLYPH[icon]}
-        </svg>
-      </span>
-      <h1 className="min-w-0 whitespace-nowrap text-[22px] font-bold leading-snug">{children}</h1>
-    </div>
+    <header className="pb-5">
+      <div className="flex items-center gap-3 px-5 pb-1 pt-9">
+        <span
+          data-icon={icon}
+          aria-hidden="true"
+          className="flex h-9 w-9 flex-none items-center justify-center rounded-[11px] bg-toss-soft"
+        >
+          <svg width="22" height="22" viewBox="0 0 24 24">
+            {GLYPH[icon]}
+          </svg>
+        </span>
+        <h1 className="min-w-0 whitespace-nowrap text-[22px] font-bold leading-snug">{children}</h1>
+      </div>
+      <p className="px-5 text-sm text-sub">{subtitle}</p>
+    </header>
   )
 }
