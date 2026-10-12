@@ -90,7 +90,8 @@ describe('App title layout is identical on every tab', () => {
 describe('gap between the title area and the body is identical on every tab', () => {
   beforeEach(() => localStorage.clear())
 
-  const hasTopSpace = (el: Element | null) => !!el && /(^|\s)(pt|py|mt)-/.test(el.className)
+  // 배경색이 있는 상자(칩, 버튼)의 py-* 는 상자 안쪽 여백이라 본문과 제목 사이 간격이 아니다.
+  const hasTopSpace = (el: Element | null) => !!el && /(^|\s)(pt|py|mt)-/.test(el.className) && !/(^|\s)bg-/.test(el.className)
 
   it('draws the header (title + subtitle) with one shared component and adds no extra top space to the first body element', async () => {
     render(<App />)

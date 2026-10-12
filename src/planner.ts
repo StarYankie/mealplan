@@ -9,6 +9,23 @@ const fromUtc = (ms: number) => new Date(ms).toISOString().slice(0, 10)
 const mondayIndex = (ms: number) => (new Date(ms).getUTCDay() + 6) % 7
 const daysBetween = (a: string, b: string) => Math.abs(toUtc(a) - toUtc(b)) / DAY_MS
 
+const localUtc = (d: Date) => Date.UTC(d.getFullYear(), d.getMonth(), d.getDate())
+
+/** 그 날짜가 속한 주의 월요일 (월요일이면 그 날) */
+export function thisMonday(from: Date): string {
+  const local = localUtc(from)
+  return fromUtc(local - mondayIndex(local) * DAY_MS)
+}
+
+export const addDays = (iso: string, days: number): string => fromUtc(toUtc(iso) + days * DAY_MS)
+
+/** 월요일 시작일이 이번 주에서 몇 주 떨어져 있는지 (0=이번 주, 1=다음 주). 월요일이 아니면 null */
+export function weekOffset(startDate: string, today: Date): number | null {
+  const start = toUtc(startDate)
+  if (mondayIndex(start) !== 0) return null
+  return Math.round((start - toUtc(thisMonday(today))) / DAY_MS / 7)
+}
+
 export function nextMonday(from: Date): string {
   const local = Date.UTC(from.getFullYear(), from.getMonth(), from.getDate())
   const add = (7 - mondayIndex(local)) % 7

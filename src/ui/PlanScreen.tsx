@@ -1,6 +1,6 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { DAY_LONG, DIFFICULTY_LABEL, MEAL_LABEL } from '../format'
-import { generatePlan, nextMonday, rerollMeal } from '../planner'
+import { generatePlan, nextMonday, rerollMeal, thisMonday, addDays, weekOffset } from '../planner'
 import type { Meal, Plan, PlannedMeal, Recipe, WeekSettings } from '../types'
 import { PageTitle } from './PageTitle'
 import { RecipeView } from './RecipeView'
@@ -28,10 +28,28 @@ export function PlanScreen({ settings, recipes, plan, onPlan }: Props) {
   const [openIndex, setOpenIndex] = useState<number | null>(null)
   const byId = new Map(recipes.map((r) => [r.id, r]))
 
-  const make = () => {
+  const dateInput = useRef<HTMLInputElement>(null)
+  const generate = (start: string) => {
     setOpenIndex(null)
-    onPlan(generatePlan({ settings, recipes, startDate, weeks: 1, keep: plan?.meals.filter((m) => m.locked) }))
+    onPlan(generatePlan({ settings, recipes, startDate: start, weeks: 1, keep: plan?.meals.filter((m) => m.locked) }))
   }
+  const make = () => generate(startDate)
+  // 칩을 누르면 시작일을 바꾸고, 이미 식단이 있으면 그 주 식단으로 바로 다시 만든다 (고정한 메뉴는 유지).
+  const pickStart = (start: string) => {
+    setStartDate(start)
+    if (plan) generate(start)
+  }
+  const today = new Date()
+  const offset = weekOffset(startDate, today)
+  const chips: { label: string; on: boolean; onClick: () => void }[] = [
+    { label: '이번 주', on: offset === 0, onClick: () => pickStart(thisMonday(today)) },
+    { label: '다음 주', on: offset === 1, onClick: () => pickStart(addDays(thisMonday(today), 7)) },
+    {
+      label: '날짜 선택',
+      on: offset !== 0 && offset !== 1,
+      onClick: () => (dateInput.current?.showPicker ? dateInput.current.showPicker() : dateInput.current?.click()),
+    },
+  ]
   const toggleLock = (index: number) =>
     plan && onPlan({ ...plan, meals: plan.meals.map((m, i) => (i === index ? { ...m, locked: !m.locked } : m)) })
   const reroll = (index: number) => plan && onPlan(rerollMeal(plan, index, { settings, recipes }))
@@ -40,8 +58,18 @@ export function PlanScreen({ settings, recipes, plan, onPlan }: Props) {
   const openRecipe = open ? byId.get(open.recipeId) : undefined
   const weekOf = (date: string) => Math.floor((utc(date) - utc(plan!.startDate)) / DAY_MS / 7)
 
-  const title = !plan ? '식단 만들어 볼까요?' : plan.weeks === 1 ? '이번 주 식단이에요' : '한 달 식단이에요'
-  const subtitle = plan ? `${monthDay(plan.startDate)}부터 ${plan.weeks * 7}일` : '시작일을 정하고 만들어 보세요'
+  const planOffset = plan ? weekOffset(plan.startDate, today) : null
+  const shortDate = (iso: string) => `${new Date(utc(iso)).getUTCMonth() + 1}/${new Date(utc(iso)).getUTCDate()}`
+  const title = !plan
+    ? '식단 만들어 볼까요?'
+    : plan.weeks > 1
+      ? '한 달 식단이에요'
+      : planOffset === 0
+        ? '이번 주 식단이에요'
+        : planOffset === 1
+          ? '다음 주 식단이에요'
+          : `${shortDate(plan.startDate)} 시작 식단` // 제목이 두 줄이 되지 않게 짧게
+  const subtitle = plan ? `${monthDay(plan.startDate)}부터 ${plan.weeks * 7}일` : `${monthDay(startDate)}부터 7일 식단을 만들어요`
   const settingsChanged = !!plan?.settings && JSON.stringify(plan.settings) !== JSON.stringify(settings)
 
   const notice = (text: string) => (
@@ -56,15 +84,27 @@ export function PlanScreen({ settings, recipes, plan, onPlan }: Props) {
         {title}
       </PageTitle>
 
-      <label className="flex items-center justify-between px-5 pb-3">
-        <span className="text-sm text-sub">시작일</span>
+      <div className="relative flex gap-1.5 px-5 pb-3">
+        {chips.map((c) => (
+          <button
+            key={c.label}
+            aria-pressed={c.on}
+            onClick={c.onClick}
+            className={`rounded-full px-4 py-1.5 text-[13px] font-semibold ${c.on ? 'bg-ink text-surface' : 'bg-line text-sub'}`}
+          >
+            {c.label}
+          </button>
+        ))}
+        {/* 화면에는 보이지 않는 날짜 입력. '날짜 선택' 칩이 이 입력의 달력을 연다. */}
         <input
+          ref={dateInput}
           type="date"
+          aria-label="시작일 직접 선택"
           value={startDate}
-          onChange={(e) => e.target.value && setStartDate(e.target.value)}
-          className="rounded-lg bg-line px-3 py-1.5 text-sm text-ink"
+          onChange={(e) => e.target.value && pickStart(e.target.value)}
+          className="pointer-events-none absolute bottom-3 right-5 h-0 w-0 opacity-0"
         />
-      </label>
+      </div>
       {settingsChanged && notice('설정이 바뀌었어요. 식단 만들기를 누르면 새 설정이 반영돼요. (고정한 메뉴는 유지돼요)')}
       {plan?.warnings.map(notice)}
       {plan && plan.meals.length === 0 && <p className="px-5 py-6 text-sm text-mute">만들 끼니가 없어요. 설정에서 인원을 확인해 주세요.</p>}

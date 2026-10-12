@@ -118,14 +118,6 @@ describe('PlanScreen', () => {
     expect(screen.getByText(/만들 끼니가 없어요/)).toBeInTheDocument()
   })
 
-  it('lets the start date be changed', async () => {
-    const seen: (Plan | null)[] = []
-    render(<Harness onPlan={(p) => seen.push(p)} />)
-    fireEvent.change(screen.getByLabelText('시작일'), { target: { value: '2026-12-31' } })
-    await userEvent.click(makeBtn())
-    expect(seen.at(-1)!.startDate).toBe('2026-12-31')
-  })
-
   it('tells the user when settings changed after the plan was made', async () => {
     const { rerender } = render(<Harness />)
     await userEvent.click(makeBtn())
@@ -136,3 +128,69 @@ describe('PlanScreen', () => {
     expect(screen.getByText(/설정이 바뀌었어요/)).toBeInTheDocument()
   })
 })
+
+describe('start date chips', () => {
+  beforeEach(() => {
+    vi.useFakeTimers({ toFake: ['Date'] })
+    vi.setSystemTime(new Date(2026, 9, 11, 12)) // 일요일 → 이번 주 월요일 10/5, 다음 주 10/12
+  })
+  afterEach(() => vi.useRealTimers())
+
+  const pressed = (name: string) => screen.getByRole('button', { name }).getAttribute('aria-pressed') === 'true'
+  const planFor = (startDate: string, weeks: 1 | 4 = 1) => generatePlan({ settings: defaultSettings(), recipes, startDate, weeks })
+
+  it('shows 이번 주 / 다음 주 / 날짜 선택 and defaults to the coming Monday', () => {
+    render(<Harness />)
+    expect(pressed('이번 주')).toBe(false)
+    expect(pressed('다음 주')).toBe(true) // 일요일에 열면 다음 주 월요일(10/12)
+    expect(pressed('날짜 선택')).toBe(false)
+    expect(screen.queryByLabelText('시작일')).not.toBeInTheDocument() // 예전 입력칸은 없다
+  })
+
+  it('only selects a chip while there is no plan, then 식단 만들기 uses it', async () => {
+    const seen: (Plan | null)[] = []
+    render(<Harness onPlan={(p) => seen.push(p)} />)
+    await userEvent.click(screen.getByRole('button', { name: '이번 주' }))
+    expect(seen).toHaveLength(0)
+    expect(pressed('이번 주')).toBe(true)
+    await userEvent.click(makeBtn())
+    expect(seen.at(-1)!.startDate).toBe('2026-10-05')
+  })
+
+  it('regenerates right away for the tapped week when a plan already exists', async () => {
+    const seen: (Plan | null)[] = []
+    render(<Harness initialPlan={planFor('2026-10-12')} onPlan={(p) => seen.push(p)} />)
+    await userEvent.click(screen.getByRole('button', { name: '이번 주' }))
+    expect(seen.at(-1)!.startDate).toBe('2026-10-05')
+    expect(pressed('이번 주')).toBe(true)
+    await userEvent.click(screen.getByRole('button', { name: '다음 주' }))
+    expect(seen.at(-1)!.startDate).toBe('2026-10-12')
+  })
+
+  it('lets any date be picked with 날짜 선택', async () => {
+    const seen: (Plan | null)[] = []
+    render(<Harness onPlan={(p) => seen.push(p)} />)
+    fireEvent.change(screen.getByLabelText('시작일 직접 선택'), { target: { value: '2026-12-31' } })
+    expect(pressed('날짜 선택')).toBe(true)
+    expect(seen).toHaveLength(0)
+    await userEvent.click(makeBtn())
+    expect(seen.at(-1)!.startDate).toBe('2026-12-31')
+  })
+
+  it.each([
+    ['2026-10-05', '이번 주 식단이에요'],
+    ['2026-10-12', '다음 주 식단이에요'],
+    ['2026-12-31', '12/31 시작 식단'],
+  ])('titles a plan starting %s as "%s"', (start, title) => {
+    render(<Harness initialPlan={planFor(start)} />)
+    const h1 = screen.getByRole('heading', { level: 1 })
+    expect(h1).toHaveTextContent(title)
+    expect(h1.textContent!.length).toBeLessThanOrEqual(11)
+  })
+
+  it('keeps the title for an old four-week plan', () => {
+    render(<Harness initialPlan={planFor('2026-10-05', 4)} />)
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('한 달 식단이에요')
+  })
+})
+

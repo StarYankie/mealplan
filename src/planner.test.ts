@@ -1,4 +1,4 @@
-import { generatePlan, rerollMeal, nextMonday } from './planner'
+import { generatePlan, rerollMeal, nextMonday, thisMonday, addDays, weekOffset } from './planner'
 import { defaultSettings } from './settings'
 import type { Difficulty, Meal, Recipe } from './types'
 
@@ -138,3 +138,24 @@ describe('settings changes and locks', () => {
     expect(plan.settings).toEqual(s)
   })
 })
+
+describe('week helpers', () => {
+  it('thisMonday returns the Monday on or before the date', () => {
+    expect(thisMonday(new Date(2026, 9, 11))).toBe('2026-10-05') // 일요일 → 그 주 월요일
+    expect(thisMonday(new Date(2026, 9, 12))).toBe('2026-10-12') // 월요일
+    expect(thisMonday(new Date(2026, 9, 14))).toBe('2026-10-12') // 수요일
+  })
+  it('addDays works across month and year boundaries', () => {
+    expect(addDays('2026-10-12', 7)).toBe('2026-10-19')
+    expect(addDays('2026-12-28', 7)).toBe('2027-01-04')
+    expect(addDays('2026-03-02', -7)).toBe('2026-02-23')
+  })
+  it('weekOffset says how many weeks from this week a Monday start is, or null', () => {
+    const sunday = new Date(2026, 9, 11)
+    expect(weekOffset('2026-10-05', sunday)).toBe(0)
+    expect(weekOffset('2026-10-12', sunday)).toBe(1)
+    expect(weekOffset('2026-10-26', sunday)).toBe(3)
+    expect(weekOffset('2026-10-13', sunday)).toBeNull() // 월요일이 아니면 null
+  })
+})
+
