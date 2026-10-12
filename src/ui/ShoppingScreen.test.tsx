@@ -134,6 +134,15 @@ describe('ShoppingScreen', () => {
     expect(screen.getByText(/2개 중 1개 샀어요/)).toBeInTheDocument()
   })
 
+  it('does not carry checkmarks over to another week with the same items', async () => {
+    const other: Plan = { ...plan, startDate: '2026-11-02', meals: plan.meals.map((m, i) => ({ ...m, date: i === 0 ? '2026-11-02' : '2026-11-09' })) }
+    const { rerender } = render(<Harness />)
+    await userEvent.click(screen.getByRole('checkbox', { name: '양파 2개' }))
+    expect(screen.getByRole('checkbox', { name: '양파 2개' })).toBeChecked()
+    rerender(<Harness p={other} />)
+    expect(screen.getByRole('checkbox', { name: '양파 2개' })).not.toBeChecked()
+  })
+
   it('keeps checkmarks when the screen is left and reopened', async () => {
     render(<Harness />)
     await userEvent.click(screen.getByRole('checkbox', { name: '양파 2개' }))

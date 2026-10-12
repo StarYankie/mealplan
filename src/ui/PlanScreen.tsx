@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react'
 import { DAY_LONG, DIFFICULTY_LABEL, MEAL_LABEL } from '../format'
-import { generatePlan, nextMonday, rerollMeal, thisMonday, addDays, weekOffset } from '../planner'
+import { generatePlan, rerollMeal, thisMonday, addDays, weekOffset } from '../planner'
 import type { Meal, Plan, PlannedMeal, Recipe, WeekSettings } from '../types'
 import { PageTitle } from './PageTitle'
 import { RecipeView } from './RecipeView'
@@ -9,7 +9,9 @@ import { Sheet } from './Sheet'
 interface Props {
   settings: WeekSettings
   recipes: Recipe[]
-  plan: Plan | null
+  plan: Plan | null // 지금 보고 있는 주(startDate)의 식단
+  startDate: string
+  onStartDate: (d: string) => void
   onPlan: (p: Plan | null) => void
 }
 
@@ -23,8 +25,7 @@ const utc = (iso: string) => Date.parse(iso + 'T00:00:00Z')
 const dayName = (iso: string) => DAY_LONG[(new Date(utc(iso)).getUTCDay() + 6) % 7]
 const monthDay = (iso: string) => `${new Date(utc(iso)).getUTCMonth() + 1}월 ${new Date(utc(iso)).getUTCDate()}일`
 
-export function PlanScreen({ settings, recipes, plan, onPlan }: Props) {
-  const [startDate, setStartDate] = useState(() => plan?.startDate ?? nextMonday(new Date()))
+export function PlanScreen({ settings, recipes, plan, startDate, onStartDate, onPlan }: Props) {
   const [openIndex, setOpenIndex] = useState<number | null>(null)
   const byId = new Map(recipes.map((r) => [r.id, r]))
 
@@ -34,10 +35,11 @@ export function PlanScreen({ settings, recipes, plan, onPlan }: Props) {
     onPlan(generatePlan({ settings, recipes, startDate: start, weeks: 1, keep: plan?.meals.filter((m) => m.locked) }))
   }
   const make = () => generate(startDate)
-  // 칩을 누르면 시작일을 바꾸고, 이미 식단이 있으면 그 주 식단으로 바로 다시 만든다 (고정한 메뉴는 유지).
+  // 칩은 보고 있는 주만 바꾼다. 그 주 식단이 이미 있으면 그대로 보여 주고, 없으면 만들기 전 화면이 나온다.
+  // 식단은 주마다 따로 보관돼서 왔다 갔다 해도 새로 만들어지지 않는다.
   const pickStart = (start: string) => {
-    setStartDate(start)
-    if (plan) generate(start)
+    setOpenIndex(null)
+    onStartDate(start)
   }
   const today = new Date()
   const offset = weekOffset(startDate, today)

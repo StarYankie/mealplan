@@ -19,7 +19,14 @@ export default function App() {
   const [tab, setTab] = useState<Tab>('plan')
   return (
     <main className="mx-auto min-h-screen max-w-md bg-surface pb-40">
-      {tab === 'plan' && <PlanScreen settings={app.settings} recipes={app.recipes} plan={app.plan} onPlan={app.setPlan} />}
+      {tab === 'plan' && <PlanScreen
+          settings={app.settings}
+          recipes={app.recipes}
+          plan={app.plan}
+          startDate={app.startDate}
+          onStartDate={app.setStartDate}
+          onPlan={app.setPlan}
+        />}
       {tab === 'shopping' && (
         <ShoppingScreen
           plan={app.plan}

@@ -46,7 +46,8 @@ export function ShoppingScreen({ plan, recipes, pantry, onTogglePantry, bought, 
   const weeks = weekCount(plan)
   const current = Math.min(week, weeks - 1)
   const items = buildShoppingList(plan, recipes, current, pantry)
-  const keyOf = (i: (typeof items)[number]) => `${current}|${i.name}|${i.unit}|${i.amount}`
+  // 체크 표시는 식단(시작일)별로 따로 기억한다. 다른 주에 같은 재료가 있어도 체크가 따라가지 않는다.
+  const keyOf = (i: (typeof items)[number]) => `${plan.startDate}|${current}|${i.name}|${i.unit}|${i.amount}`
   const boughtCount = items.filter((i) => bought.has(keyOf(i))).length
   const categories = [...new Set(items.map((i) => i.category))]
   // 본문 첫 요소에는 위쪽 여백을 주지 않는다 (제목 영역과의 간격은 PageTitle 이 정한다)

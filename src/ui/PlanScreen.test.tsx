@@ -1,9 +1,11 @@
-import { useState } from 'react'
+import { useMemo } from 'react'
 import { render, screen, within, fireEvent } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { PlanScreen } from './PlanScreen'
 import { generatePlan } from '../planner'
 import { defaultSettings } from '../settings'
+import { KEYS, type KeyValueStore } from '../storage'
+import { useAppState } from './useAppState'
 import type { Difficulty, Meal, Plan, Recipe, WeekSettings } from '../types'
 
 const mk = (id: string, meal: Meal, d: Difficulty): Recipe => ({
@@ -20,6 +22,12 @@ const recipes = [
   ...Array.from({ length: 10 }, (_, i) => mk(`D${i}`, 'dinner', 2)),
 ]
 
+const memStore = (initial: Record<string, string> = {}): KeyValueStore => {
+  const m = new Map(Object.entries(initial))
+  return { get: (k) => m.get(k) ?? null, set: (k, v) => void m.set(k, v) }
+}
+
+// 실제 저장 로직(useAppState)과 함께 화면을 돌린다. 주마다 식단이 따로 보관되는지도 여기서 확인한다.
 function Harness({
   settings = defaultSettings(),
   initialPlan = null,
@@ -29,14 +37,25 @@ function Harness({
   initialPlan?: Plan | null
   onPlan?: (p: Plan | null) => void
 }) {
-  const [plan, setPlan] = useState<Plan | null>(initialPlan)
+  const store = useMemo(
+    () =>
+      memStore(
+        initialPlan
+          ? { [KEYS.plans]: JSON.stringify({ [initialPlan.startDate]: initialPlan }), [KEYS.start]: JSON.stringify(initialPlan.startDate) }
+          : {},
+      ),
+    [],
+  )
+  const app = useAppState(store, recipes)
   return (
     <PlanScreen
       settings={settings}
       recipes={recipes}
-      plan={plan}
+      plan={app.plan}
+      startDate={app.startDate}
+      onStartDate={app.setStartDate}
       onPlan={(p) => {
-        setPlan(p)
+        app.setPlan(p)
         onPlan?.(p)
       }}
     />
@@ -157,14 +176,44 @@ describe('start date chips', () => {
     expect(seen.at(-1)!.startDate).toBe('2026-10-05')
   })
 
-  it('regenerates right away for the tapped week when a plan already exists', async () => {
+  const names = () => rows().map((r) => nameOf(r))
+
+  it('switching weeks shows the saved plan and never regenerates by itself', async () => {
     const seen: (Plan | null)[] = []
     render(<Harness initialPlan={planFor('2026-10-12')} onPlan={(p) => seen.push(p)} />)
+    const before = names()
     await userEvent.click(screen.getByRole('button', { name: '이번 주' }))
-    expect(seen.at(-1)!.startDate).toBe('2026-10-05')
-    expect(pressed('이번 주')).toBe(true)
+    expect(seen).toHaveLength(0) // 아무것도 새로 만들지 않는다
+    expect(screen.getByRole('heading', { name: '식단 만들어 볼까요?' })).toBeInTheDocument() // 이번 주엔 아직 식단이 없다
     await userEvent.click(screen.getByRole('button', { name: '다음 주' }))
-    expect(seen.at(-1)!.startDate).toBe('2026-10-12')
+    expect(seen).toHaveLength(0)
+    expect(names()).toEqual(before) // 아까 만든 식단 그대로
+  })
+
+  it('keeps one plan per week when going back and forth', async () => {
+    render(<Harness />)
+    await userEvent.click(makeBtn()) // 다음 주(10/12) 식단
+    const nextWeek = names()
+    await userEvent.click(screen.getByRole('button', { name: '이번 주' }))
+    await userEvent.click(makeBtn()) // 이번 주(10/5) 식단
+    const thisWeek = names()
+    for (let i = 0; i < 3; i++) {
+      await userEvent.click(screen.getByRole('button', { name: '다음 주' }))
+      expect(names()).toEqual(nextWeek)
+      await userEvent.click(screen.getByRole('button', { name: '이번 주' }))
+      expect(names()).toEqual(thisWeek)
+    }
+  })
+
+  it('regenerating changes only the week being shown', async () => {
+    render(<Harness />)
+    await userEvent.click(makeBtn())
+    const nextWeek = names()
+    await userEvent.click(screen.getByRole('button', { name: '이번 주' }))
+    await userEvent.click(makeBtn())
+    await userEvent.click(makeBtn()) // 이번 주만 다시
+    await userEvent.click(screen.getByRole('button', { name: '다음 주' }))
+    expect(names()).toEqual(nextWeek)
   })
 
   it('lets any date be picked with 날짜 선택', async () => {
